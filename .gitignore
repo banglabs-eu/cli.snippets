@@ -1,0 +1,18 @@
+# Virtual environment
+.venv/
+
+# Python bytecode
+__pycache__/
+*.pyc
+
+# Environment / secrets
+.env
+
+# SQLite databases
+*.db
+
+# Generated exports
+exports/
+
+# Claude Code
+.claude/
