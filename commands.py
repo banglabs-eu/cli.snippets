@@ -66,6 +66,7 @@ Commands:
   s clear            Unset source — future notes have no source
   s<id> +t <tags>    Add tag(s) to note (e.g. s2 +t cheese, bread)
   s<id> -t <tags>    Remove tag(s) from note (e.g. s2 -t cheese)
+  del <id>           Delete a note (e.g. del 5)
   t <tags>           Tag the last note (Tab to autocomplete)
   b                  Browse all notes (rendered markdown)
   ns <name>          New source for session (reuse existing or create via nse)
@@ -192,6 +193,18 @@ def cmd_note_remove_tags(note_id: int, tags_str: str):
             print(f"Tag '{name}' not found.")
     if removed:
         print(f"#{note_id} -t {', '.join(removed)}")
+
+
+# ─── del <id> (delete a note) ───
+
+def cmd_note_delete(note_id: int):
+    note = client.get_note(note_id)
+    if not note:
+        print(f"Note #{note_id} not found.")
+        return
+    ok = client.delete_note(note_id)
+    if ok:
+        print(f"Deleted note #{note_id}.")
 
 
 # ─── t <tags> (tag last note) ───
@@ -464,6 +477,11 @@ def dispatch(user_input: str, session: Session, export_dir: str) -> bool:
         cmd_va(export_dir, arg)
     elif prefix == "STADD":
         cmd_stadd(arg)
+    elif prefix == "DEL":
+        if not arg.isdigit():
+            print("Usage: del <note_id>")
+        else:
+            cmd_note_delete(int(arg))
     else:
         # No recognized command — treat entire line as a note
         cmd_note(session, stripped)

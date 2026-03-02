@@ -85,6 +85,14 @@ def bulk_update_note_source(note_ids: list[int], source_id: int):
     _check(_get().post("/notes/bulk-source", json={"note_ids": note_ids, "source_id": source_id}))
 
 
+def delete_note(note_id: int):
+    r = _get().delete(f"/notes/{note_id}")
+    if r.status_code == 404:
+        return False
+    _check(r)
+    return True
+
+
 def get_tags_for_note(note_id: int) -> list[dict]:
     r = _check(_get().get(f"/notes/{note_id}/tags"))
     return r.json()

@@ -7,6 +7,7 @@ from pathlib import Path
 from dotenv import load_dotenv
 from prompt_toolkit import prompt
 from prompt_toolkit.history import FileHistory
+from prompt_toolkit.key_binding import KeyBindings
 
 import client
 from session import Session
@@ -28,6 +29,12 @@ def main():
     history_dir.mkdir(exist_ok=True)
     history = FileHistory(str(history_dir / "history"))
 
+    kb = KeyBindings()
+
+    @kb.add("c-j")
+    def _insert_newline(event):
+        event.current_buffer.insert_text("\n")
+
     print("Snippets CLI ready. Type 'help' for commands.")
 
     while True:
@@ -39,7 +46,8 @@ def main():
                     src_label = f' [{src["name"][:20]}]'
 
             user_input = prompt(f"snippets{src_label}> ", history=history,
-                                completer=completer, complete_while_typing=False)
+                                completer=completer, complete_while_typing=False,
+                                key_bindings=kb)
         except (EOFError, KeyboardInterrupt):
             print("\nBye!")
             break
