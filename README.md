@@ -2,7 +2,7 @@
 
 A terminal-based note-taking REPL that stores Markdown snippets in PostgreSQL with source citations, tags, locator references, and Markdown export.
 
-The CLI talks to a REST backend ([SnippetsBackend](../SnippetsBackend)) — start the backend before running the CLI.
+The CLI talks to a REST backend [SnippetsBackend](https://github.com/banglabs-eu/SnippetsBackend) — start the backend before running the CLI.
 
 ## Setup
 
