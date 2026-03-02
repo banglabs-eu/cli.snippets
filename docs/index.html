@@ -291,19 +291,16 @@ section {
 
 /* ─── Commands ─── */
 .cheatsheet-link {
-  display: inline-block;
-  margin-top: 4px;
-  font-size: 13px;
-  color: var(--blue);
-  text-decoration: none;
-  border: 1px solid var(--border);
-  border-radius: 6px;
-  padding: 3px 10px;
-  transition: border-color 0.2s, color 0.2s;
+  border: 1px solid var(--border) !important;
+  border-radius: 6px !important;
+  padding: 4px 12px !important;
+  font-size: 12px !important;
+  transition: border-color 0.2s, background 0.2s, color 0.2s !important;
 }
 .cheatsheet-link:hover {
-  border-color: var(--blue);
-  color: #fff;
+  border-color: var(--blue) !important;
+  background: rgba(88, 166, 255, 0.1);
+  color: #fff !important;
 }
 .commands-toolbar {
   display: flex;
@@ -656,6 +653,7 @@ footer a:hover { text-decoration: underline; }
     <li><a href="#schema">Schema</a></li>
     <li><a href="#architecture">Architecture</a></li>
     <li><a href="#setup">Setup</a></li>
+    <li><a href="cheatsheet.html" class="cheatsheet-link" target="_blank">Cheatsheet (PDF)</a></li>
   </ul>
 </nav>
 
@@ -727,7 +725,7 @@ footer a:hover { text-decoration: underline; }
 <!-- ─── Commands ─── -->
 <section id="commands">
   <h2 class="section-title fade-in">Command Reference</h2>
-  <p class="section-subtitle fade-in">Every command available in the REPL. Click an example to try it in the terminal. <a href="cheatsheet.html" class="cheatsheet-link" target="_blank">Printable cheatsheet (PDF)</a></p>
+  <p class="section-subtitle fade-in">Every command available in the REPL. Click an example to try it in the terminal.</p>
 
   <div class="commands-toolbar fade-in">
     <input type="text" class="commands-search" id="commands-search" placeholder="Search commands...">
