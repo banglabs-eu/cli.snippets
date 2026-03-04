@@ -11,9 +11,9 @@
 <link rel="stylesheet" href="index.css">
 <script>
 (function(){
-  var t=localStorage.getItem('snippets-theme')||'auto';
-  document.documentElement.setAttribute('data-theme',t);
-  if(t==='auto'&&window.matchMedia('(prefers-color-scheme:light)').matches)
+  var t=localStorage.getItem('snippets-theme');
+  if(t)document.documentElement.setAttribute('data-theme',t);
+  if(window.matchMedia('(prefers-color-scheme:light)').matches)
     document.documentElement.classList.add('prefers-light');
 })();
 </script>
@@ -26,28 +26,40 @@
 <div class="bg-glow bg-glow-3"></div>
 
 <!-- Navigation -->
-<nav>
-  <div class="nav-brand">
+<nav class="nav" id="nav">
+  <div class="nav-inner">
     <a href="#hero" class="nav-logo">
       <span class="logo-mark">{S}</span>
       <span class="logo-text">cli.snippets</span>
     </a>
+    <div class="nav-links" id="nav-links">
+      <a href="#hero">Try It</a>
+      <a href="#features">Features</a>
+      <a href="#commands">Commands</a>
+      <a href="#schema">Schema</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#setup">Setup</a>
+      <a href="cheatsheet.html" target="_blank">Cheatsheet</a>
+    </div>
+    <div class="nav-actions">
+      <button class="theme-toggle" id="theme-toggle" aria-label="Toggle theme">
+        <svg class="icon-auto" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="M4.93 4.93l1.41 1.41"/><path d="M17.66 17.66l1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="M4.93 19.07l1.41-1.41"/><path d="M17.66 6.34l1.41-1.41"/></svg>
+        <svg class="icon-sun" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><path d="M12 1v2"/><path d="M12 21v2"/><path d="M4.22 4.22l1.42 1.42"/><path d="M18.36 18.36l1.42 1.42"/><path d="M1 12h2"/><path d="M21 12h2"/><path d="M4.22 19.78l1.42-1.42"/><path d="M18.36 5.64l1.42-1.42"/></svg>
+        <svg class="icon-moon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </button>
+      <div class="lang-switcher" id="lang-switcher">
+        <button class="lang-btn" id="lang-btn" aria-label="Select language">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M2 12h20"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          <span id="current-lang">EN</span>
+          <svg class="chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+        </button>
+        <div class="lang-dropdown" id="lang-dropdown"></div>
+      </div>
+      <button class="hamburger" id="hamburger" aria-label="Menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
   </div>
-  <button class="theme-toggle" aria-label="Toggle theme">
-    <svg class="icon-auto" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41m11.32-11.32l1.41-1.41"/><path d="M12 2a10 10 0 0 0 0 20" fill="currentColor" opacity="0.15"/></svg>
-    <svg class="icon-light" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-    <svg class="icon-dark" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-  </button>
-  <button class="hamburger" aria-label="Menu">&#9776;</button>
-  <ul class="nav-links">
-    <li><a href="#hero">Try It</a></li>
-    <li><a href="#features">Features</a></li>
-    <li><a href="#commands">Commands</a></li>
-    <li><a href="#schema">Schema</a></li>
-    <li><a href="#architecture">Architecture</a></li>
-    <li><a href="#setup">Setup</a></li>
-    <li><a href="cheatsheet.html" class="cheatsheet-link" target="_blank">Cheatsheet</a></li>
-  </ul>
 </nav>
 
 <!-- Hero + Terminal -->
@@ -1200,14 +1212,147 @@ document.querySelectorAll('.copy-btn').forEach(btn => {
 });
 
 /* ═══════════════════════════════════════════
+   THEME TOGGLE
+   ═══════════════════════════════════════════ */
+var themeToggle = document.getElementById('theme-toggle');
+var storedTheme = localStorage.getItem('snippets-theme');
+if (storedTheme) {
+  document.documentElement.setAttribute('data-theme', storedTheme);
+}
+
+var prefersLight = window.matchMedia('(prefers-color-scheme: light)');
+function syncOsTheme(e) {
+  document.documentElement.classList.toggle('prefers-light', e.matches);
+}
+syncOsTheme(prefersLight);
+prefersLight.addEventListener('change', syncOsTheme);
+
+themeToggle.addEventListener('click', function () {
+  var current = document.documentElement.getAttribute('data-theme');
+  var next;
+  if (!current) {
+    next = 'light';
+  } else if (current === 'light') {
+    next = 'dark';
+  } else {
+    next = null;
+  }
+  if (next) {
+    document.documentElement.setAttribute('data-theme', next);
+    localStorage.setItem('snippets-theme', next);
+  } else {
+    document.documentElement.removeAttribute('data-theme');
+    localStorage.removeItem('snippets-theme');
+  }
+});
+
+/* ═══════════════════════════════════════════
+   LANGUAGE SWITCHER
+   ═══════════════════════════════════════════ */
+var LANGUAGES = [
+  { code: 'en', name: 'English' },
+  { code: 'bg', name: 'Български' },
+  { code: 'cs', name: 'Čeština' },
+  { code: 'da', name: 'Dansk' },
+  { code: 'de', name: 'Deutsch' },
+  { code: 'el', name: 'Ελληνικά' },
+  { code: 'es', name: 'Español' },
+  { code: 'et', name: 'Eesti' },
+  { code: 'fi', name: 'Suomi' },
+  { code: 'fr', name: 'Français' },
+  { code: 'ga', name: 'Gaeilge' },
+  { code: 'hr', name: 'Hrvatski' },
+  { code: 'hu', name: 'Magyar' },
+  { code: 'it', name: 'Italiano' },
+  { code: 'lt', name: 'Lietuvių' },
+  { code: 'lv', name: 'Latviešu' },
+  { code: 'mt', name: 'Malti' },
+  { code: 'nl', name: 'Nederlands' },
+  { code: 'pl', name: 'Polski' },
+  { code: 'pt', name: 'Português' },
+  { code: 'ro', name: 'Română' },
+  { code: 'sk', name: 'Slovenčina' },
+  { code: 'sl', name: 'Slovenščina' },
+  { code: 'sv', name: 'Svenska' },
+];
+
+var langDropdown = document.getElementById('lang-dropdown');
+var langBtn = document.getElementById('lang-btn');
+var langSwitcher = document.getElementById('lang-switcher');
+var currentLangEl = document.getElementById('current-lang');
+
+LANGUAGES.forEach(function (l) {
+  var opt = document.createElement('div');
+  opt.className = 'lang-option';
+  opt.dataset.lang = l.code;
+  opt.textContent = l.name;
+  opt.addEventListener('click', function () {
+    setLanguage(l.code);
+    langSwitcher.classList.remove('open');
+  });
+  langDropdown.appendChild(opt);
+});
+
+langBtn.addEventListener('click', function (e) {
+  e.stopPropagation();
+  langSwitcher.classList.toggle('open');
+});
+
+document.addEventListener('click', function () {
+  langSwitcher.classList.remove('open');
+});
+
+function setLanguage(lang) {
+  var valid = LANGUAGES.some(function (l) { return l.code === lang; });
+  if (!valid) lang = 'en';
+  document.documentElement.lang = lang;
+  currentLangEl.textContent = lang.toUpperCase();
+  localStorage.setItem('snippets-lang', lang);
+  langDropdown.querySelectorAll('.lang-option').forEach(function (opt) {
+    opt.classList.toggle('active', opt.dataset.lang === lang);
+  });
+}
+
+function detectLanguage() {
+  var stored = localStorage.getItem('snippets-lang');
+  if (stored && LANGUAGES.some(function (l) { return l.code === stored; })) return stored;
+  var browser = (navigator.language || 'en').split('-')[0].toLowerCase();
+  if (LANGUAGES.some(function (l) { return l.code === browser; })) return browser;
+  return 'en';
+}
+
+setLanguage(detectLanguage());
+
+/* ═══════════════════════════════════════════
+   NAV SCROLL EFFECT
+   ═══════════════════════════════════════════ */
+var navEl = document.getElementById('nav');
+window.addEventListener('scroll', function () {
+  var scrollY = window.pageYOffset || document.documentElement.scrollTop;
+  if (scrollY > 50) {
+    navEl.classList.add('scrolled');
+  } else {
+    navEl.classList.remove('scrolled');
+  }
+}, { passive: true });
+
+/* ═══════════════════════════════════════════
    HAMBURGER MENU
    ═══════════════════════════════════════════ */
-document.querySelector('.hamburger').addEventListener('click', () => {
-  document.querySelector('.nav-links').classList.toggle('open');
+var hamburger = document.getElementById('hamburger');
+var navLinksEl = document.getElementById('nav-links');
+
+hamburger.addEventListener('click', function () {
+  hamburger.classList.toggle('active');
+  navLinksEl.classList.toggle('open');
+  document.body.style.overflow = navLinksEl.classList.contains('open') ? 'hidden' : '';
 });
-document.querySelectorAll('.nav-links a').forEach(a => {
-  a.addEventListener('click', () => {
-    document.querySelector('.nav-links').classList.remove('open');
+
+navLinksEl.querySelectorAll('a').forEach(function (link) {
+  link.addEventListener('click', function () {
+    hamburger.classList.remove('active');
+    navLinksEl.classList.remove('open');
+    document.body.style.overflow = '';
   });
 });
 
@@ -1223,44 +1368,19 @@ const fadeObserver = new IntersectionObserver((entries) => {
 document.querySelectorAll('.fade-in').forEach(el => fadeObserver.observe(el));
 
 const sections = document.querySelectorAll('section[id]');
-const navLinks = document.querySelectorAll('.nav-links a');
+const navLinksAll = document.querySelectorAll('.nav-links a');
 const navObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
       const id = entry.target.id;
-      navLinks.forEach(link => {
+      navLinksAll.forEach(link => {
         link.classList.toggle('active', link.getAttribute('href') === '#' + id);
       });
     }
   });
-}, { threshold: 0.3, rootMargin: '-56px 0px 0px 0px' });
+}, { threshold: 0.3, rootMargin: '-66px 0px 0px 0px' });
 
 sections.forEach(s => navObserver.observe(s));
-
-/* ═══════════════════════════════════════════
-   THEME TOGGLE
-   ═══════════════════════════════════════════ */
-const THEME_CYCLE = ['auto', 'light', 'dark'];
-const themeBtn = document.querySelector('.theme-toggle');
-
-function applyTheme(theme) {
-  document.documentElement.setAttribute('data-theme', theme);
-  const isLight = theme === 'light' ||
-    (theme === 'auto' && window.matchMedia('(prefers-color-scheme: light)').matches);
-  document.documentElement.classList.toggle('prefers-light', isLight);
-}
-
-themeBtn.addEventListener('click', function() {
-  const current = document.documentElement.getAttribute('data-theme') || 'auto';
-  const next = THEME_CYCLE[(THEME_CYCLE.indexOf(current) + 1) % THEME_CYCLE.length];
-  localStorage.setItem('snippets-theme', next);
-  applyTheme(next);
-});
-
-window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function() {
-  const theme = localStorage.getItem('snippets-theme') || 'auto';
-  if (theme === 'auto') applyTheme('auto');
-});
 
 })();
 </script>
