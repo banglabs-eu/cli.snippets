@@ -1,8 +1,8 @@
 {
   "app.snippets": "Snippets",
 
-  "main.backend_unreachable": "Errore: SnippetsBackend non raggiungibile.",
-  "main.backend_hint": "Assicurati che il backend sia in esecuzione (docker compose up --build).",
+  "main.backend_unreachable": "Errore: backend.snippets non raggiungibile.",
+  "main.backend_hint": "Assicurati che il backend sia in esecuzione.",
   "main.backend_check": "Verifica che il backend sia ancora in esecuzione.",
   "main.ready": "cli.{S} pronto. Digita 'help' per i comandi.",
   "main.logged_in_as": "Accesso effettuato come {username}.",
