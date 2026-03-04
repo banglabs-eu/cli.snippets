@@ -6,30 +6,34 @@
 <title>cli.snippets — Note-taking for your terminal</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='6' fill='%23f59e0b'/><text x='16' y='23' text-anchor='middle' font-family='monospace' font-size='16' font-weight='bold' fill='%230a0e17'>{S}</text></svg>">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 /* ─── Variables ─── */
 :root {
-  --bg: #0b0b11;
-  --bg-raised: #111119;
-  --bg-card: #16161f;
-  --bg-card-hover: #1b1b26;
-  --border: #232333;
-  --border-light: #2e2e42;
-  --text: #e8e1d8;
-  --text-dim: #908a82;
-  --text-faint: #5a5660;
+  --bg: #0a0e17;
+  --bg-raised: #0f1520;
+  --bg-card: #141c2b;
+  --bg-card-hover: #1a2438;
+  --border: #1e293b;
+  --border-light: #2a3a50;
+  --text: #eaf0f6;
+  --text-dim: #7a8ba0;
+  --text-faint: #4a5568;
+  --accent: #f59e0b;
+  --accent-light: #fbbf24;
+  --accent-glow: rgba(245, 158, 11, 0.15);
   --green: #22ee88;
   --green-dim: #1a9960;
   --green-glow: rgba(34, 238, 136, 0.10);
-  --amber: #eea622;
+  --amber: #f59e0b;
   --blue: #5588ee;
   --purple: #9977ee;
   --rose: #ee4466;
   --cyan: #44ccbb;
-  --font-display: 'Cormorant Garamond', Georgia, serif;
-  --font-body: 'DM Sans', system-ui, sans-serif;
-  --font-mono: 'Space Mono', 'Courier New', monospace;
+  --font-display: 'Playfair Display', Georgia, 'Times New Roman', serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
 }
 
 /* ─── Reset ─── */
@@ -41,26 +45,11 @@ body {
   color: var(--text);
   line-height: 1.6;
   overflow-x: hidden;
-  background-image:
-    linear-gradient(rgba(35, 35, 51, 0.12) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(35, 35, 51, 0.12) 1px, transparent 1px);
-  background-size: 56px 56px;
 }
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
 .mono { font-family: var(--font-mono); }
-
-/* ─── Grain overlay ─── */
-.grain {
-  position: fixed;
-  inset: 0;
-  pointer-events: none;
-  z-index: 10000;
-  opacity: 0.028;
-  background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
-  background-size: 200px 200px;
-}
 
 /* ─── Background glows ─── */
 .bg-glow {
@@ -72,21 +61,21 @@ body {
 }
 .bg-glow-1 {
   width: 600px; height: 600px;
-  background: var(--green);
+  background: var(--accent);
   opacity: 0.045;
   top: -200px; right: -100px;
   animation: drift1 25s ease-in-out infinite;
 }
 .bg-glow-2 {
   width: 500px; height: 500px;
-  background: var(--purple);
+  background: var(--blue);
   opacity: 0.04;
   bottom: 20%; left: -150px;
   animation: drift2 30s ease-in-out infinite;
 }
 .bg-glow-3 {
   width: 400px; height: 400px;
-  background: var(--amber);
+  background: var(--accent-light);
   opacity: 0.03;
   top: 55%; right: 5%;
   animation: drift3 20s ease-in-out infinite;
@@ -114,30 +103,32 @@ nav {
   align-items: center;
   gap: 12px;
 }
-.nav-brand a {
+.nav-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text);
+}
+.logo-mark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 6px;
+  background: var(--accent);
+  color: var(--bg);
   font-family: var(--font-mono);
   font-weight: 700;
-  font-size: 15px;
-  color: var(--green);
-  text-decoration: none;
-  letter-spacing: -0.02em;
+  font-size: 16px;
+  border-radius: 8px;
+  letter-spacing: -1px;
 }
-.nav-brand a span { color: var(--text-faint); font-weight: 400; }
-.nav-org {
-  font-family: var(--font-body);
-  font-size: 11px;
-  font-weight: 500;
-  color: #c7d2fe;
-  background: rgba(99, 102, 241, 0.1);
-  border: 1px solid rgba(99, 102, 241, 0.2);
-  border-radius: 6px;
-  padding: 2px 8px;
-  text-decoration: none;
-  transition: background 0.2s, border-color 0.2s;
-}
-.nav-org:hover {
-  background: rgba(99, 102, 241, 0.18);
-  border-color: rgba(99, 102, 241, 0.4);
+.logo-text {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
 }
 .nav-links { display: flex; gap: 20px; list-style: none; align-items: center; }
 .nav-links a {
@@ -150,7 +141,7 @@ nav {
 }
 .nav-links a:hover, .nav-links a.active {
   color: var(--text);
-  border-bottom-color: var(--green);
+  border-bottom-color: var(--accent);
 }
 .cheatsheet-link {
   border: 1px solid var(--border) !important;
@@ -161,8 +152,8 @@ nav {
   transition: border-color 0.2s, background 0.2s, color 0.2s !important;
 }
 .cheatsheet-link:hover {
-  border-color: var(--blue) !important;
-  background: rgba(85, 136, 238, 0.08) !important;
+  border-color: var(--accent) !important;
+  background: var(--accent-glow) !important;
   color: #fff !important;
 }
 .hamburger {
@@ -200,7 +191,7 @@ section {
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--green);
+  color: var(--accent);
   display: block;
   margin-bottom: 12px;
 }
@@ -258,24 +249,24 @@ section {
   margin-bottom: 24px;
   padding: 5px 16px;
   border-radius: 20px;
-  background: rgba(99, 102, 241, 0.08);
-  border: 1px solid rgba(99, 102, 241, 0.2);
+  background: var(--accent-glow);
+  border: 1px solid rgba(245, 158, 11, 0.25);
   text-decoration: none;
   transition: background 0.2s, border-color 0.2s;
 }
 .hero-org-badge:hover {
-  background: rgba(99, 102, 241, 0.15);
-  border-color: rgba(99, 102, 241, 0.4);
+  background: rgba(245, 158, 11, 0.2);
+  border-color: rgba(245, 158, 11, 0.4);
 }
 .hero-org-badge .org-name {
   font-size: 13px;
   font-weight: 600;
-  background: linear-gradient(135deg, #c7d2fe, #6366f1, #06b6d4);
+  background: linear-gradient(135deg, #fef3c7, #f59e0b, #d97706);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
-.hero-org-badge .org-sep { color: rgba(99, 102, 241, 0.35); font-size: 13px; }
+.hero-org-badge .org-sep { color: rgba(245, 158, 11, 0.35); font-size: 13px; }
 .hero-org-badge .org-project { font-size: 12px; color: var(--text-dim); }
 .hero-title {
   font-family: var(--font-display);
@@ -426,12 +417,12 @@ section {
 .feature-card {
   background: var(--bg-card);
   border: 1px solid var(--border);
-  border-left: 3px solid var(--green);
+  border-left: 3px solid var(--accent);
   border-radius: 2px 10px 10px 2px;
   padding: 22px;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s, box-shadow 0.25s;
 }
-.feature-card:nth-child(3n+2) { border-left-color: var(--amber); }
+.feature-card:nth-child(3n+2) { border-left-color: var(--accent-light); }
 .feature-card:nth-child(3n) { border-left-color: var(--blue); }
 .feature-card:hover {
   transform: translateY(-3px);
@@ -458,8 +449,8 @@ section {
 .feature-card code {
   font-family: var(--font-mono);
   font-size: 12px;
-  color: var(--green);
-  background: rgba(34, 238, 136, 0.08);
+  color: var(--accent);
+  background: var(--accent-glow);
   padding: 1px 5px;
   border-radius: 3px;
 }
@@ -486,8 +477,8 @@ section {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 .commands-search:focus {
-  border-color: var(--green);
-  box-shadow: 0 0 0 3px rgba(34, 238, 136, 0.08);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
 }
 .commands-search::placeholder { color: var(--text-faint); }
 .filter-btn {
@@ -504,9 +495,9 @@ section {
 }
 .filter-btn:hover { border-color: var(--text-faint); color: var(--text-dim); }
 .filter-btn.active {
-  background: var(--green-dim);
-  border-color: var(--green);
-  color: #fff;
+  background: rgba(245, 158, 11, 0.2);
+  border-color: var(--accent);
+  color: var(--accent-light);
 }
 .commands-grid {
   display: grid;
@@ -529,7 +520,7 @@ section {
 .command-syntax {
   font-family: var(--font-mono);
   font-size: 13px;
-  color: var(--green);
+  color: var(--accent);
   margin-bottom: 4px;
 }
 .command-desc {
@@ -552,7 +543,7 @@ section {
   font-weight: 700;
   letter-spacing: 0.03em;
 }
-.badge-notes { background: rgba(34, 238, 136, 0.1); color: var(--green); }
+.badge-notes { background: var(--accent-glow); color: var(--accent); }
 .badge-sources { background: rgba(85, 136, 238, 0.1); color: var(--blue); }
 .badge-tags { background: rgba(153, 119, 238, 0.1); color: var(--purple); }
 .badge-viewing { background: rgba(238, 166, 34, 0.1); color: var(--amber); }
@@ -674,7 +665,7 @@ section {
 .arch-card .filename {
   font-family: var(--font-mono);
   font-size: 13px;
-  color: var(--green);
+  color: var(--accent);
   margin-bottom: 3px;
 }
 .arch-card .filedesc {
@@ -694,7 +685,7 @@ section {
   line-height: 1;
   letter-spacing: 4px;
 }
-.arch-card.entry { border-color: var(--green-dim); }
+.arch-card.entry { border-color: rgba(245, 158, 11, 0.35); }
 .arch-card.core { border-color: rgba(85, 136, 238, 0.35); }
 .arch-card.data { border-color: rgba(238, 166, 34, 0.35); }
 .arch-card.external {
@@ -717,7 +708,7 @@ section {
 .step-number {
   width: 36px; height: 36px;
   min-width: 36px;
-  background: var(--green-dim);
+  background: var(--accent);
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -725,8 +716,8 @@ section {
   font-family: var(--font-mono);
   font-weight: 700;
   font-size: 14px;
-  color: #fff;
-  box-shadow: 0 0 16px rgba(34, 238, 136, 0.15);
+  color: var(--bg);
+  box-shadow: 0 0 16px var(--accent-glow);
 }
 .step-content { flex: 1; }
 .step-content h3 {
@@ -783,16 +774,16 @@ footer {
   font-size: 13px;
 }
 footer a {
-  color: var(--cyan);
+  color: var(--accent);
   text-decoration: none;
   transition: color 0.2s;
 }
-footer a:hover { color: var(--text); text-decoration: underline; }
+footer a:hover { color: var(--accent-light); text-decoration: underline; }
 .footer-brand {
   font-size: 15px;
   font-weight: 600;
   margin-bottom: 4px;
-  background: linear-gradient(135deg, #c7d2fe, #6366f1, #06b6d4);
+  background: linear-gradient(135deg, #fef3c7, #f59e0b, #d97706);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -819,7 +810,6 @@ footer a:hover { color: var(--text); text-decoration: underline; }
 <body>
 
 <!-- Atmosphere -->
-<div class="grain"></div>
 <div class="bg-glow bg-glow-1"></div>
 <div class="bg-glow bg-glow-2"></div>
 <div class="bg-glow bg-glow-3"></div>
@@ -827,8 +817,10 @@ footer a:hover { color: var(--text); text-decoration: underline; }
 <!-- Navigation -->
 <nav>
   <div class="nav-brand">
-    <a href="#hero">&gt;_ cli<span>.snippets</span></a>
-    <a href="https://bang-labs.eu" class="nav-org" target="_blank" rel="noopener">Bang Labs</a>
+    <a href="#hero" class="nav-logo">
+      <span class="logo-mark">{S}</span>
+      <span class="logo-text">cli.snippets</span>
+    </a>
   </div>
   <button class="hamburger" aria-label="Menu">&#9776;</button>
   <ul class="nav-links">
@@ -845,10 +837,10 @@ footer a:hover { color: var(--text); text-decoration: underline; }
 <!-- Hero + Terminal -->
 <section id="hero">
   <div class="fade-in">
-    <a href="https://bang-labs.eu" class="hero-org-badge" target="_blank" rel="noopener">
-      <span class="org-name">Bang Labs</span>
+    <a href="https://snippets.eu" class="hero-org-badge">
+      <span class="org-name">Snippets</span>
       <span class="org-sep">/</span>
-      <span class="org-project">cli.snippets</span>
+      <span class="org-project">CLI Documentation</span>
     </a>
     <h1 class="hero-title">Note-taking for<br>your <em>terminal</em></h1>
     <p class="hero-subtitle">A PostgreSQL-backed REPL for capturing Markdown snippets with source citations, tags, locator references, and structured export.</p>
@@ -1072,13 +1064,14 @@ python main.py</pre>
 
 <!-- Footer -->
 <footer>
-  <a href="https://bang-labs.eu" class="footer-brand" target="_blank" rel="noopener">Bang Labs</a>
-  <p>Open source. Built in public. Contributions welcome.</p>
-  <p style="margin-top: 6px;">MIT License &copy; 2026 Adam Bang Kjems</p>
+  <a href="https://snippets.eu" class="footer-brand">Snippets</a>
+  <p>CLI documentation for the Snippets platform</p>
   <div class="footer-links">
+    <a href="https://snippets.eu">snippets.eu</a>
     <a href="https://github.com/banglabs-eu/cli.snippets">GitHub</a>
-    <a href="https://bang-labs.eu" target="_blank" rel="noopener">bang-labs.eu</a>
+    <a href="cheatsheet.html">Cheatsheet</a>
   </div>
+  <p style="margin-top: 14px;">&copy; 2025 Snippets &middot; MIT License</p>
 </footer>
 
 <!-- JavaScript -->
