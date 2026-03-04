@@ -60,8 +60,19 @@ locator.py  →  Regex parser for page (p32, pp. 10-15) and time (t1:23:45) toke
 `dispatch()` checks in order:
 1. exit/quit → return False
 2. help/login/register/logout → always available
-3. Auth gate: remaining commands require `client.is_authenticated()`
-4. `_dispatch_data()`: regex match `s<id> +t/-t` → tag ops, then prefix match (S, T, NS, VS, VT, VA, STADD, DEL, B/BROWSE/LS, NSE) → else treat as note text
+3. lang → available without auth (language switching)
+4. Auth gate: remaining commands require `client.is_authenticated()`
+5. `_dispatch_data()`: regex match `s<id> +t/-t` → tag ops, then prefix match (S, T, NS, VS, VT, VA, STADD, DEL, B/BROWSE/LS, NSE) → else treat as note text
+
+## Internationalization (i18n)
+
+- **`i18n.py`** — Translation module. `init()` loads language at startup; `_(key, **kwargs)` returns translated string with `str.format()` interpolation; `_n(key_one, key_other, count)` handles plurals.
+- **`i18n/*.json`** — Flat dot-namespaced translation files (en, de, fr, es, it, pt). Keys follow `module.context.name` pattern (e.g. `cmd.note.saved`, `export.tags`). Variables use `{name}` placeholders.
+- **Language priority**: persisted file `~/.snippets_cli/language` > `SNIPPETS_LANG` env var > `"en"`.
+- **Fallback chain**: current language → English → raw key. Missing keys in any translation automatically fall back to English.
+- **Commands stay in English** — only output text (help, errors, prompts, status messages) is translated.
+- **`lang` command**: `lang` shows current language, `lang <code>` switches and persists. Available before login.
+- **Adding a new language**: Create `i18n/<code>.json` with translated keys. Missing keys fall back to English automatically.
 
 ## Environment
 
@@ -69,3 +80,4 @@ locator.py  →  Regex parser for page (p32, pp. 10-15) and time (t1:23:45) toke
 |----------|---------|---------|
 | `BACKEND_URL` | `http://localhost:5000` | Backend API base URL |
 | `EXPORT_DIR` | `./exports` | Markdown export output directory |
+| `SNIPPETS_LANG` | `en` | Display language (en, de, fr, es, it, pt) |

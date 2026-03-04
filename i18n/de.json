@@ -1,0 +1,139 @@
+{
+  "main.backend_unreachable": "Fehler: SnippetsBackend ist nicht erreichbar.",
+  "main.backend_hint": "Stelle sicher, dass das Backend läuft (docker compose up --build).",
+  "main.backend_check": "Prüfe, ob das Backend noch läuft.",
+  "main.ready": "Snippets CLI bereit. Tippe 'help' für eine Befehlsübersicht.",
+  "main.logged_in_as": "Angemeldet als {username}.",
+  "main.session_expired": "Sitzung abgelaufen. Bitte erneut mit 'login' anmelden.",
+  "main.not_logged_in": "Nicht angemeldet. Tippe 'login' oder 'register' um loszulegen.",
+  "main.offline": "offline",
+  "main.bye": "Tschüss!",
+  "main.error": "Fehler: {detail}",
+
+  "cmd.bye": "Tschüss!",
+  "cmd.not_logged_in": "Nicht angemeldet. Tippe zuerst 'login' oder 'register'.",
+  "cmd.session_expired": "Sitzung abgelaufen. Bitte erneut mit 'login' anmelden.",
+  "cmd.cancelled": "Abgebrochen.",
+
+  "cmd.help.text": "\nBefehle:\n  login              Bei deinem Konto anmelden\n  register           Ein neues Konto erstellen\n  logout             Abmelden (gespeichertes Token löschen)\n  change_password    Passwort ändern (Alias: passwd)\n  whoami             Aktuell angemeldeten Benutzernamen anzeigen\n  invite             Einladungscode generieren (nur Admin)\n  invites            Alle Einladungscodes auflisten (nur Admin)\n  lang               Anzeigesprache anzeigen/ändern\n  <Text>             Einfach tippen — jede unbekannte Eingabe wird als Notiz gespeichert\n  s <Name_oder_ID>   Sitzungsquelle setzen (Tab zum Autovervollständigen)\n  s clear            Quelle aufheben — neue Notizen haben keine Quelle\n  s<id> +t <Tags>    Tag(s) zu Notiz hinzufügen (z.B. s2 +t cheese, bread)\n  s<id> -t <Tags>    Tag(s) von Notiz entfernen (z.B. s2 -t cheese)\n  e / edit <id>      Notiz bearbeiten (Pfeiltasten zum Ändern, Enter zum Speichern)\n  del <id>           Notiz löschen (z.B. del 5)\n  t <Tags>           Letzte Notiz taggen (Tab zum Autovervollständigen)\n  find / f <Suche>   Notizen nach Text durchsuchen (Groß-/Kleinschreibung egal)\n  b / ls             Alle Notizen durchblättern (gerendertes Markdown)\n  ns <Name>          Neue Quelle für Sitzung (vorhandene nutzen oder via nse erstellen)\n  nse                Quellen-Interview (MLA-ähnliche Felder)\n  vs <Name_oder_ID>  Notizen nach Quelle anzeigen/exportieren\n  vt <Tag>           Notizen nach Tag anzeigen/exportieren\n  va <Nach, Vor>     Notizen nach Autor anzeigen/exportieren\n  stadd <Name>       Neuen Quellentyp hinzufügen\n  help               Diese Hilfe anzeigen\n  exit               Beenden\n\nOrtsangaben (an das Ende der Notiz anhängen):\n  p32       Seite 32       pp. 10-15   Seiten 10-15\n  t1:23:45  Zeit 1:23:45\n\nBeispielsitzung:\n  > ns The Republic\n  > The cave allegory is profound p514\n  > t philosophy, epistemology\n  > s2 +t plato\n  > vs The Republic\n  > b\n",
+
+  "cmd.note.saved": "Notiz #{id} gespeichert",
+  "cmd.note.linked_to": "verknüpft mit \"{name}\"",
+  "cmd.note.not_found": "Notiz #{id} nicht gefunden.",
+
+  "cmd.s.sources_header": "Quellen:",
+  "cmd.s.no_sources": "Noch keine Quellen. Benutze: ns <Name> um eine zu erstellen.",
+  "cmd.s.current": "Aktuell: \"{name}\" (id:{id})",
+  "cmd.s.no_source_set": "Keine Quelle gesetzt. Benutze: s <Name_oder_ID>",
+  "cmd.s.cleared": "Quelle aufgehoben. Neue Notizen haben keine Quelle.",
+  "cmd.s.not_found": "Quelle \"{name}\" nicht gefunden. Benutze ns <Name> um eine zu erstellen.",
+  "cmd.s.source_set": "Quelle gesetzt: \"{name}\" (id:{id})",
+  "cmd.s.linked_one": "{count} vorherige Sitzungsnotiz verknüpft.",
+  "cmd.s.linked_other": "{count} vorherige Sitzungsnotizen verknüpft.",
+
+  "cmd.tags.none_specified": "Keine Tags angegeben.",
+  "cmd.tag.not_found": "Tag '{name}' nicht gefunden.",
+
+  "cmd.edit.prompt": "Notiz bearbeiten: ",
+  "cmd.edit.empty": "Leere Notiz — abgebrochen.",
+  "cmd.edit.no_changes": "Keine Änderungen.",
+  "cmd.edit.updated": "Notiz #{id} aktualisiert.",
+  "cmd.edit.usage": "Verwendung: e <Notiz-ID>",
+
+  "cmd.del.deleted": "Notiz #{id} gelöscht:",
+  "cmd.del.usage": "Verwendung: del <Notiz-ID>",
+
+  "cmd.t.no_note": "Noch keine Notiz in dieser Sitzung erstellt.",
+
+  "cmd.browse.no_notes": "Noch keine Notizen vorhanden.",
+
+  "cmd.ns.usage": "Verwendung: ns <Quellenname>",
+
+  "cmd.nse.title": "=== Quellen-Interview ===",
+  "cmd.nse.source_title": "Quellentitel: ",
+  "cmd.nse.source_types": "Quellentypen:",
+  "cmd.nse.source_type_prompt": "Quellentyp (Name oder #, Enter zum Überspringen): ",
+  "cmd.nse.field_prompt": "{field} (Enter zum Überspringen): ",
+  "cmd.nse.year": "Jahr/Datum",
+  "cmd.nse.url": "URL",
+  "cmd.nse.accessed_date": "Zugriffsdatum",
+  "cmd.nse.edition": "Ausgabe",
+  "cmd.nse.pages": "Seiten (Bereich)",
+  "cmd.nse.extra_notes": "Zusätzliche Anmerkungen",
+  "cmd.nse.publisher_name": "Verlagsname",
+  "cmd.nse.publisher_city": "Verlagsort",
+  "cmd.nse.source_created": "Quelle erstellt: #{id} - {name}",
+  "cmd.nse.add_authors": "Autoren hinzufügen (leerer Nachname zum Beenden):",
+  "cmd.nse.author_last": "  Autor {n} Nachname: ",
+  "cmd.nse.author_first": "  Autor {n} Vorname: ",
+  "cmd.nse.author_added": "    Hinzugefügt: {last}, {first}",
+  "cmd.nse.citation": "Zitat: {citation}",
+  "cmd.nse.source_set": "Quelle gesetzt: id:{id}",
+
+  "cmd.vs.usage": "Verwendung: vs <Quellenname_oder_ID>",
+  "cmd.vs.not_found": "Quelle \"{name}\" nicht gefunden.",
+  "cmd.export.info": "Export: {path} ({count} Notizen)",
+
+  "cmd.vt.usage": "Verwendung: vt <Tagname>",
+  "cmd.vt.not_found": "Tag \"{name}\" nicht gefunden.",
+
+  "cmd.va.usage": "Verwendung: va <Nach, Vor>",
+  "cmd.va.not_found": "Keine Notizen für Autor \"{name}\" gefunden.",
+
+  "cmd.find.usage": "Verwendung: find <Suchbegriff>",
+  "cmd.find.no_results": "Keine Notizen zu \"{query}\" gefunden.",
+  "cmd.find.found_one": "{count} Notiz zu \"{query}\" gefunden",
+  "cmd.find.found_other": "{count} Notizen zu \"{query}\" gefunden",
+
+  "cmd.stadd.usage": "Verwendung: stadd <Typname>",
+  "cmd.stadd.created": "Quellentyp erstellt: #{id} - {name}",
+  "cmd.stadd.exists": "Quellentyp '{name}' existiert bereits.",
+
+  "cmd.login.username": "Benutzername: ",
+  "cmd.login.password": "Passwort: ",
+  "cmd.login.success": "Angemeldet als {username}.",
+  "cmd.login.failed": "Anmeldung fehlgeschlagen: {detail}",
+
+  "cmd.register.username": "Benutzername wählen: ",
+  "cmd.register.password": "Passwort wählen (mind. 6 Zeichen): ",
+  "cmd.register.confirm": "Passwort bestätigen: ",
+  "cmd.register.invite_code": "Einladungscode: ",
+  "cmd.register.success": "Registriert und angemeldet als {username}.",
+  "cmd.register.taken": "Benutzername bereits vergeben.",
+  "cmd.register.failed": "Registrierung fehlgeschlagen: {detail}",
+
+  "cmd.password_mismatch": "Passwörter stimmen nicht überein.",
+
+  "cmd.passwd.current": "Aktuelles Passwort: ",
+  "cmd.passwd.new": "Neues Passwort (mind. 6 Zeichen): ",
+  "cmd.passwd.confirm": "Neues Passwort bestätigen: ",
+  "cmd.passwd.success": "Passwort erfolgreich geändert.",
+  "cmd.passwd.failed": "Fehlgeschlagen: {detail}",
+
+  "cmd.invite.code": "Einladungscode: {code}",
+  "cmd.invite.failed": "Einladungscode konnte nicht erstellt werden.",
+  "cmd.invite.admin_only": "Nur der Einladungs-Admin kann Einladungscodes erstellen.",
+
+  "cmd.invites.admin_only": "Nur der Einladungs-Admin kann Einladungscodes einsehen.",
+  "cmd.invites.none": "Noch keine Einladungscodes vorhanden.",
+  "cmd.invites.available": "verfügbar",
+  "cmd.invites.used": "eingelöst von Benutzer #{id}",
+
+  "cmd.logout.success": "Abgemeldet.",
+
+  "export.note_label": "Notiz #{id}",
+  "export.created": "Erstellt: {date}",
+  "export.tags": "Tags: {tags}",
+  "export.source": "Quelle: {name}",
+  "export.citation": "Zitat: {citation}",
+  "export.notes_count_one": "{count} Notiz",
+  "export.notes_count_other": "{count} Notizen",
+  "export.notes_sources_count": "{notes} Notizen aus {sources} Quellen",
+  "export.tag_heading": "Tag: {name}",
+  "export.search_heading": "Suche: {query}",
+  "export.author_heading": "Autor: {last}, {first}",
+
+  "lang.current": "Aktuelle Sprache: {lang}",
+  "lang.changed": "Sprache geändert zu {lang}.",
+  "lang.invalid": "Unbekannte Sprache '{code}'. Verfügbar: {available}"
+}

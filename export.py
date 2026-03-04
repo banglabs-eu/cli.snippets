@@ -5,6 +5,7 @@ import re
 from pathlib import Path
 
 import client
+from i18n import _, _n
 
 
 def slugify(text: str, max_len: int = 40) -> str:
@@ -22,7 +23,8 @@ def _format_note_block(note: dict,
                        tags: list[dict] | None = None,
                        show_source: bool = False) -> str:
     lines = []
-    meta_parts = [f"Note #{note['id']}", f"Created: {note['created_at']}"]
+    meta_parts = [_("export.note_label", id=note['id']),
+                  _("export.created", date=note['created_at'])]
 
     if note["locator_type"] and note["locator_value"]:
         if note["locator_type"] == "page":
@@ -34,15 +36,15 @@ def _format_note_block(note: dict,
         tags = client.get_tags_for_note(note["id"])
     if tags:
         tag_str = ", ".join(t["name"] for t in tags)
-        meta_parts.append(f"Tags: {tag_str}")
+        meta_parts.append(_("export.tags", tags=tag_str))
 
     if show_source and note["source_id"]:
         src = client.get_source(note["source_id"])
         if src:
-            meta_parts.append(f"Source: {src['name']}")
+            meta_parts.append(_("export.source", name=src['name']))
             citation = client.build_citation(note["source_id"])
             if citation:
-                meta_parts.append(f"Citation: {citation}")
+                meta_parts.append(_("export.citation", citation=citation))
 
     lines.append(" | ".join(meta_parts))
     lines.append("")
@@ -85,7 +87,8 @@ def export_by_source(source_id: int, export_dir: str) -> tuple[str, list[dict]]:
     lines = [f"# {src['name']}", ""]
     if citation:
         lines += [f"*{citation}*", ""]
-    lines += [f"**{len(notes)} note(s)**", "", "---", ""]
+    count_str = _n("export.notes_count_one", "export.notes_count_other", len(notes))
+    lines += [f"**{count_str}**", "", "---", ""]
 
     for note in notes:
         lines.append(_format_note_block(note, tags=tags_map.get(note["id"], [])))
@@ -107,7 +110,9 @@ def export_by_tag(tag_id: int, export_dir: str) -> tuple[str, list[dict]]:
     notes = client.get_notes_by_tag(tag_id)
     tags_map = client.get_tags_for_notes([n["id"] for n in notes])
 
-    lines = [f"# Tag: {tag['name']}", "", f"**{len(notes)} note(s)**", "", "---", ""]
+    count_str = _n("export.notes_count_one", "export.notes_count_other", len(notes))
+    lines = [f"# {_('export.tag_heading', name=tag['name'])}", "",
+             f"**{count_str}**", "", "---", ""]
 
     for note in notes:
         lines.append(_format_note_block(note, tags=tags_map.get(note["id"], []),
@@ -126,7 +131,9 @@ def export_search_results(query: str, notes: list[dict],
     _ensure_export_dir(export_dir)
     tags_map = client.get_tags_for_notes([n["id"] for n in notes])
 
-    lines = [f"# Search: {query}", "", f"**{len(notes)} note(s)**", "", "---", ""]
+    count_str = _n("export.notes_count_one", "export.notes_count_other", len(notes))
+    lines = [f"# {_('export.search_heading', query=query)}", "",
+             f"**{count_str}**", "", "---", ""]
 
     for note in notes:
         lines.append(_format_note_block(note, tags=tags_map.get(note["id"], []),
@@ -146,7 +153,7 @@ def export_by_author(author_last: str, author_first: str,
     sources = client.get_sources_by_author(author_last, author_first)
 
     all_notes = []
-    lines = [f"# Author: {author_last}, {author_first}", ""]
+    lines = [f"# {_('export.author_heading', last=author_last, first=author_first)}", ""]
 
     for src in sources:
         citation = client.build_citation(src["id"])
@@ -161,7 +168,8 @@ def export_by_author(author_last: str, author_first: str,
         for note in notes:
             lines.append(_format_note_block(note, tags=tags_map.get(note["id"], [])))
 
-    lines.insert(2, f"**{len(all_notes)} note(s) across {len(sources)} source(s)**")
+    count_str = _("export.notes_sources_count", notes=len(all_notes), sources=len(sources))
+    lines.insert(2, f"**{count_str}**")
     lines.insert(3, "")
 
     slug = slugify(f"{author_last}_{author_first}")

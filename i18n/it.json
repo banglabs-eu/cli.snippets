@@ -1,0 +1,139 @@
+{
+  "main.backend_unreachable": "Errore: SnippetsBackend non raggiungibile.",
+  "main.backend_hint": "Assicurati che il backend sia in esecuzione (docker compose up --build).",
+  "main.backend_check": "Verifica che il backend sia ancora in esecuzione.",
+  "main.ready": "Snippets CLI pronto. Digita 'help' per i comandi.",
+  "main.logged_in_as": "Accesso effettuato come {username}.",
+  "main.session_expired": "Sessione scaduta. Esegui 'login' per riaccedere.",
+  "main.not_logged_in": "Accesso non effettuato. Digita 'login' o 'register' per iniziare.",
+  "main.offline": "offline",
+  "main.bye": "Arrivederci!",
+  "main.error": "Errore: {detail}",
+
+  "cmd.bye": "Arrivederci!",
+  "cmd.not_logged_in": "Accesso non effettuato. Digita 'login' o 'register' prima.",
+  "cmd.session_expired": "Sessione scaduta. Esegui 'login' per riaccedere.",
+  "cmd.cancelled": "Annullato.",
+
+  "cmd.help.text": "\nComandi:\n  login              Accedi al tuo account\n  register           Crea un nuovo account\n  logout             Esci (cancella il token salvato)\n  change_password    Cambia la password (alias: passwd)\n  whoami             Mostra il nome utente corrente\n  invite             Genera un codice invito (solo admin)\n  invites            Elenca tutti i codici invito (solo admin)\n  lang               Mostra/cambia la lingua di visualizzazione\n  <testo>            Scrivi e basta — ogni input non riconosciuto viene salvato come nota\n  s <nome_o_id>      Imposta la fonte della sessione (Tab per autocompletamento)\n  s clear            Rimuovi la fonte — le note future non avranno fonte\n  s<id> +t <tag>     Aggiungi tag a una nota (es. s2 +t formaggio, pane)\n  s<id> -t <tag>     Rimuovi tag da una nota (es. s2 -t formaggio)\n  e / edit <id>      Modifica una nota (frecce per modificare, Invio per salvare)\n  del <id>           Elimina una nota (es. del 5)\n  t <tag>            Tagga l'ultima nota (Tab per autocompletamento)\n  find / f <query>   Cerca note per testo (senza distinzione maiuscole/minuscole)\n  b / ls             Sfoglia tutte le note (markdown renderizzato)\n  ns <nome>          Nuova fonte per la sessione (riusa esistente o crea con nse)\n  nse                Intervista di inserimento fonte (campi stile MLA)\n  vs <nome_o_id>     Visualizza/esporta note per fonte\n  vt <tag>           Visualizza/esporta note per tag\n  va <Cognome, Nome> Visualizza/esporta note per autore\n  stadd <nome>       Aggiungi un nuovo tipo di fonte\n  help               Mostra questa guida\n  exit               Esci\n\nToken di posizione (aggiungi alla fine della nota):\n  p32       Pagina 32       pp. 10-15   Pagine 10-15\n  t1:23:45  Tempo 1:23:45\n\nSessione di esempio:\n  > ns The Republic\n  > The cave allegory is profound p514\n  > t philosophy, epistemology\n  > s2 +t plato\n  > vs The Republic\n  > b\n",
+
+  "cmd.note.saved": "Nota #{id} salvata",
+  "cmd.note.linked_to": "collegata a \"{name}\"",
+  "cmd.note.not_found": "Nota #{id} non trovata.",
+
+  "cmd.s.sources_header": "Fonti:",
+  "cmd.s.no_sources": "Nessuna fonte ancora. Usa: ns <nome> per crearne una.",
+  "cmd.s.current": "Corrente: \"{name}\" (id:{id})",
+  "cmd.s.no_source_set": "Nessuna fonte impostata. Usa: s <nome_o_id>",
+  "cmd.s.cleared": "Fonte rimossa. Le note future non avranno fonte.",
+  "cmd.s.not_found": "Fonte \"{name}\" non trovata. Usa ns <nome> per crearne una.",
+  "cmd.s.source_set": "Fonte impostata: \"{name}\" (id:{id})",
+  "cmd.s.linked_one": "Collegata {count} nota precedente della sessione.",
+  "cmd.s.linked_other": "Collegate {count} note precedenti della sessione.",
+
+  "cmd.tags.none_specified": "Nessun tag specificato.",
+  "cmd.tag.not_found": "Tag '{name}' non trovato.",
+
+  "cmd.edit.prompt": "Modifica nota: ",
+  "cmd.edit.empty": "Nota vuota — annullato.",
+  "cmd.edit.no_changes": "Nessuna modifica.",
+  "cmd.edit.updated": "Nota #{id} aggiornata.",
+  "cmd.edit.usage": "Uso: e <id_nota>",
+
+  "cmd.del.deleted": "Nota #{id} eliminata:",
+  "cmd.del.usage": "Uso: del <id_nota>",
+
+  "cmd.t.no_note": "Nessuna nota creata in questa sessione.",
+
+  "cmd.browse.no_notes": "Nessuna nota ancora.",
+
+  "cmd.ns.usage": "Uso: ns <nome_fonte>",
+
+  "cmd.nse.title": "=== Intervista di inserimento fonte ===",
+  "cmd.nse.source_title": "Titolo della fonte: ",
+  "cmd.nse.source_types": "Tipi di fonte:",
+  "cmd.nse.source_type_prompt": "Tipo di fonte (nome o #, Invio per saltare): ",
+  "cmd.nse.field_prompt": "{field} (Invio per saltare): ",
+  "cmd.nse.year": "Anno/data",
+  "cmd.nse.url": "URL",
+  "cmd.nse.accessed_date": "Data di consultazione",
+  "cmd.nse.edition": "Edizione",
+  "cmd.nse.pages": "Pagine (intervallo)",
+  "cmd.nse.extra_notes": "Note aggiuntive",
+  "cmd.nse.publisher_name": "Nome editore",
+  "cmd.nse.publisher_city": "Città editore",
+  "cmd.nse.source_created": "Fonte creata: #{id} - {name}",
+  "cmd.nse.add_authors": "Aggiungi autori (cognome vuoto per terminare):",
+  "cmd.nse.author_last": "  Autore {n} cognome: ",
+  "cmd.nse.author_first": "  Autore {n} nome: ",
+  "cmd.nse.author_added": "    Aggiunto: {last}, {first}",
+  "cmd.nse.citation": "Citazione: {citation}",
+  "cmd.nse.source_set": "Fonte impostata: id:{id}",
+
+  "cmd.vs.usage": "Uso: vs <nome_fonte_o_id>",
+  "cmd.vs.not_found": "Fonte \"{name}\" non trovata.",
+  "cmd.export.info": "Esportazione: {path} ({count} note)",
+
+  "cmd.vt.usage": "Uso: vt <nome_tag>",
+  "cmd.vt.not_found": "Tag \"{name}\" non trovato.",
+
+  "cmd.va.usage": "Uso: va <Cognome, Nome>",
+  "cmd.va.not_found": "Nessuna nota trovata per l'autore \"{name}\".",
+
+  "cmd.find.usage": "Uso: find <query>",
+  "cmd.find.no_results": "Nessuna nota corrispondente a \"{query}\".",
+  "cmd.find.found_one": "Trovata {count} nota corrispondente a \"{query}\"",
+  "cmd.find.found_other": "Trovate {count} note corrispondenti a \"{query}\"",
+
+  "cmd.stadd.usage": "Uso: stadd <nome_tipo>",
+  "cmd.stadd.created": "Tipo di fonte creato: #{id} - {name}",
+  "cmd.stadd.exists": "Il tipo di fonte '{name}' esiste già.",
+
+  "cmd.login.username": "Nome utente: ",
+  "cmd.login.password": "Password: ",
+  "cmd.login.success": "Accesso effettuato come {username}.",
+  "cmd.login.failed": "Accesso fallito: {detail}",
+
+  "cmd.register.username": "Scegli nome utente: ",
+  "cmd.register.password": "Scegli password (min 6 caratteri): ",
+  "cmd.register.confirm": "Conferma password: ",
+  "cmd.register.invite_code": "Codice invito: ",
+  "cmd.register.success": "Registrato e connesso come {username}.",
+  "cmd.register.taken": "Nome utente già in uso.",
+  "cmd.register.failed": "Registrazione fallita: {detail}",
+
+  "cmd.password_mismatch": "Le password non corrispondono.",
+
+  "cmd.passwd.current": "Password attuale: ",
+  "cmd.passwd.new": "Nuova password (min 6 caratteri): ",
+  "cmd.passwd.confirm": "Conferma nuova password: ",
+  "cmd.passwd.success": "Password cambiata con successo.",
+  "cmd.passwd.failed": "Errore: {detail}",
+
+  "cmd.invite.code": "Codice invito: {code}",
+  "cmd.invite.failed": "Impossibile creare il codice invito.",
+  "cmd.invite.admin_only": "Solo l'amministratore degli inviti può creare codici invito.",
+
+  "cmd.invites.admin_only": "Solo l'amministratore degli inviti può visualizzare i codici invito.",
+  "cmd.invites.none": "Nessun codice invito ancora.",
+  "cmd.invites.available": "disponibile",
+  "cmd.invites.used": "usato dall'utente #{id}",
+
+  "cmd.logout.success": "Disconnesso.",
+
+  "export.note_label": "Nota #{id}",
+  "export.created": "Creato il: {date}",
+  "export.tags": "Tag: {tags}",
+  "export.source": "Fonte: {name}",
+  "export.citation": "Citazione: {citation}",
+  "export.notes_count_one": "{count} nota",
+  "export.notes_count_other": "{count} note",
+  "export.notes_sources_count": "{notes} note da {sources} fonti",
+  "export.tag_heading": "Tag: {name}",
+  "export.search_heading": "Ricerca: {query}",
+  "export.author_heading": "Autore: {last}, {first}",
+
+  "lang.current": "Lingua corrente: {lang}",
+  "lang.changed": "Lingua cambiata in {lang}.",
+  "lang.invalid": "Lingua sconosciuta '{code}'. Disponibili: {available}"
+}

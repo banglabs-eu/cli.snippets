@@ -1,0 +1,139 @@
+{
+  "main.backend_unreachable": "Erreur : SnippetsBackend est injoignable.",
+  "main.backend_hint": "Assurez-vous que le backend est lancé (docker compose up --build).",
+  "main.backend_check": "Vérifiez que le backend est toujours en cours d'exécution.",
+  "main.ready": "Snippets CLI prêt. Tapez 'help' pour voir les commandes.",
+  "main.logged_in_as": "Connecté en tant que {username}.",
+  "main.session_expired": "Session expirée. Veuillez vous reconnecter avec 'login'.",
+  "main.not_logged_in": "Non connecté. Tapez 'login' ou 'register' pour commencer.",
+  "main.offline": "hors ligne",
+  "main.bye": "Au revoir !",
+  "main.error": "Erreur : {detail}",
+
+  "cmd.bye": "Au revoir !",
+  "cmd.not_logged_in": "Non connecté. Tapez 'login' ou 'register' d'abord.",
+  "cmd.session_expired": "Session expirée. Veuillez vous reconnecter avec 'login'.",
+  "cmd.cancelled": "Annulé.",
+
+  "cmd.help.text": "\nCommandes :\n  login              Se connecter à votre compte\n  register           Créer un nouveau compte\n  logout             Se déconnecter (supprimer le jeton sauvegardé)\n  change_password    Changer votre mot de passe (alias : passwd)\n  whoami             Afficher le nom d'utilisateur connecté\n  invite             Générer un code d'invitation (admin uniquement)\n  invites            Lister les codes d'invitation (admin uniquement)\n  lang               Afficher/changer la langue d'affichage\n  <texte>            Tapez directement — toute saisie non reconnue est enregistrée comme note\n  s <nom_ou_id>      Définir la source de session (Tab pour autocompléter)\n  s clear            Retirer la source — les notes suivantes n'auront pas de source\n  s<id> +t <tags>    Ajouter des tags à une note (ex. s2 +t fromage, pain)\n  s<id> -t <tags>    Retirer des tags d'une note (ex. s2 -t fromage)\n  e / edit <id>      Modifier une note (flèches pour modifier, Entrée pour sauvegarder)\n  del <id>           Supprimer une note (ex. del 5)\n  t <tags>           Taguer la dernière note (Tab pour autocompléter)\n  find / f <requête> Rechercher des notes par texte (insensible à la casse)\n  b / ls             Parcourir toutes les notes (markdown rendu)\n  ns <nom>           Nouvelle source pour la session (réutiliser ou créer via nse)\n  nse                Entretien de saisie de source (champs type MLA)\n  vs <nom_ou_id>     Voir/exporter les notes par source\n  vt <tag>           Voir/exporter les notes par tag\n  va <Nom, Prénom>   Voir/exporter les notes par auteur\n  stadd <nom>        Ajouter un nouveau type de source\n  help               Afficher cette aide\n  exit               Quitter\n\nJetons de localisation (à ajouter en fin de note) :\n  p32       Page 32        pp. 10-15   Pages 10-15\n  t1:23:45  Temps 1:23:45\n\nExemple de session :\n  > ns The Republic\n  > The cave allegory is profound p514\n  > t philosophy, epistemology\n  > s2 +t plato\n  > vs The Republic\n  > b\n",
+
+  "cmd.note.saved": "Note #{id} enregistrée",
+  "cmd.note.linked_to": "liée à \"{name}\"",
+  "cmd.note.not_found": "Note #{id} introuvable.",
+
+  "cmd.s.sources_header": "Sources :",
+  "cmd.s.no_sources": "Aucune source pour l'instant. Utilisez : ns <nom> pour en créer une.",
+  "cmd.s.current": "Actuelle : \"{name}\" (id:{id})",
+  "cmd.s.no_source_set": "Aucune source définie. Utilisez : s <nom_ou_id>",
+  "cmd.s.cleared": "Source retirée. Les notes suivantes n'auront pas de source.",
+  "cmd.s.not_found": "Source \"{name}\" introuvable. Utilisez ns <nom> pour en créer une.",
+  "cmd.s.source_set": "Source définie : \"{name}\" (id:{id})",
+  "cmd.s.linked_one": "{count} note de session précédente liée.",
+  "cmd.s.linked_other": "{count} notes de session précédentes liées.",
+
+  "cmd.tags.none_specified": "Aucun tag spécifié.",
+  "cmd.tag.not_found": "Tag '{name}' introuvable.",
+
+  "cmd.edit.prompt": "Modifier la note : ",
+  "cmd.edit.empty": "Note vide — annulé.",
+  "cmd.edit.no_changes": "Aucune modification.",
+  "cmd.edit.updated": "Note #{id} mise à jour.",
+  "cmd.edit.usage": "Utilisation : e <id_note>",
+
+  "cmd.del.deleted": "Note #{id} supprimée :",
+  "cmd.del.usage": "Utilisation : del <id_note>",
+
+  "cmd.t.no_note": "Aucune note créée dans cette session.",
+
+  "cmd.browse.no_notes": "Aucune note pour l'instant.",
+
+  "cmd.ns.usage": "Utilisation : ns <nom_source>",
+
+  "cmd.nse.title": "=== Entretien de saisie de source ===",
+  "cmd.nse.source_title": "Titre de la source : ",
+  "cmd.nse.source_types": "Types de source :",
+  "cmd.nse.source_type_prompt": "Type de source (nom ou #, Entrée pour passer) : ",
+  "cmd.nse.field_prompt": "{field} (Entrée pour passer) : ",
+  "cmd.nse.year": "Année/date",
+  "cmd.nse.url": "URL",
+  "cmd.nse.accessed_date": "Date de consultation",
+  "cmd.nse.edition": "Édition",
+  "cmd.nse.pages": "Pages (plage)",
+  "cmd.nse.extra_notes": "Notes supplémentaires",
+  "cmd.nse.publisher_name": "Nom de l'éditeur",
+  "cmd.nse.publisher_city": "Ville de l'éditeur",
+  "cmd.nse.source_created": "Source créée : #{id} - {name}",
+  "cmd.nse.add_authors": "Ajouter des auteurs (nom de famille vide pour arrêter) :",
+  "cmd.nse.author_last": "  Auteur {n} nom de famille : ",
+  "cmd.nse.author_first": "  Auteur {n} prénom : ",
+  "cmd.nse.author_added": "    Ajouté : {last}, {first}",
+  "cmd.nse.citation": "Citation : {citation}",
+  "cmd.nse.source_set": "Source définie : id:{id}",
+
+  "cmd.vs.usage": "Utilisation : vs <nom_ou_id_source>",
+  "cmd.vs.not_found": "Source \"{name}\" introuvable.",
+  "cmd.export.info": "Export : {path} ({count} notes)",
+
+  "cmd.vt.usage": "Utilisation : vt <nom_tag>",
+  "cmd.vt.not_found": "Tag \"{name}\" introuvable.",
+
+  "cmd.va.usage": "Utilisation : va <Nom, Prénom>",
+  "cmd.va.not_found": "Aucune note trouvée pour l'auteur \"{name}\".",
+
+  "cmd.find.usage": "Utilisation : find <requête>",
+  "cmd.find.no_results": "Aucune note correspondant à \"{query}\".",
+  "cmd.find.found_one": "{count} note trouvée pour \"{query}\"",
+  "cmd.find.found_other": "{count} notes trouvées pour \"{query}\"",
+
+  "cmd.stadd.usage": "Utilisation : stadd <nom_type>",
+  "cmd.stadd.created": "Type de source créé : #{id} - {name}",
+  "cmd.stadd.exists": "Le type de source '{name}' existe déjà.",
+
+  "cmd.login.username": "Nom d'utilisateur : ",
+  "cmd.login.password": "Mot de passe : ",
+  "cmd.login.success": "Connecté en tant que {username}.",
+  "cmd.login.failed": "Échec de connexion : {detail}",
+
+  "cmd.register.username": "Choisir un nom d'utilisateur : ",
+  "cmd.register.password": "Choisir un mot de passe (6 caractères min.) : ",
+  "cmd.register.confirm": "Confirmer le mot de passe : ",
+  "cmd.register.invite_code": "Code d'invitation : ",
+  "cmd.register.success": "Inscription réussie, connecté en tant que {username}.",
+  "cmd.register.taken": "Nom d'utilisateur déjà pris.",
+  "cmd.register.failed": "Échec de l'inscription : {detail}",
+
+  "cmd.password_mismatch": "Les mots de passe ne correspondent pas.",
+
+  "cmd.passwd.current": "Mot de passe actuel : ",
+  "cmd.passwd.new": "Nouveau mot de passe (6 caractères min.) : ",
+  "cmd.passwd.confirm": "Confirmer le nouveau mot de passe : ",
+  "cmd.passwd.success": "Mot de passe modifié avec succès.",
+  "cmd.passwd.failed": "Échec : {detail}",
+
+  "cmd.invite.code": "Code d'invitation : {code}",
+  "cmd.invite.failed": "Impossible de créer le code d'invitation.",
+  "cmd.invite.admin_only": "Seul l'administrateur peut créer des codes d'invitation.",
+
+  "cmd.invites.admin_only": "Seul l'administrateur peut consulter les codes d'invitation.",
+  "cmd.invites.none": "Aucun code d'invitation pour l'instant.",
+  "cmd.invites.available": "disponible",
+  "cmd.invites.used": "utilisé par l'utilisateur #{id}",
+
+  "cmd.logout.success": "Déconnecté.",
+
+  "export.note_label": "Note #{id}",
+  "export.created": "Créée le : {date}",
+  "export.tags": "Tags : {tags}",
+  "export.source": "Source : {name}",
+  "export.citation": "Citation : {citation}",
+  "export.notes_count_one": "{count} note",
+  "export.notes_count_other": "{count} notes",
+  "export.notes_sources_count": "{notes} notes dans {sources} sources",
+  "export.tag_heading": "Tag : {name}",
+  "export.search_heading": "Recherche : {query}",
+  "export.author_heading": "Auteur : {last}, {first}",
+
+  "lang.current": "Langue actuelle : {lang}",
+  "lang.changed": "Langue changée pour {lang}.",
+  "lang.invalid": "Langue inconnue '{code}'. Disponibles : {available}"
+}

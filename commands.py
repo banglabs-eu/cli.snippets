@@ -11,6 +11,8 @@ import getpass
 
 import client
 import export
+import i18n
+from i18n import _, _n
 from locator import parse_locator
 from session import Session
 from completers import (
@@ -61,46 +63,7 @@ def _resolve_source(arg: str) -> int | None:
 # ─── help ───
 
 def cmd_help():
-    print("""
-Commands:
-  login              Log in to your account
-  register           Create a new account
-  logout             Log out (clear saved token)
-  change_password    Change your password (alias: passwd)
-  whoami             Show current logged-in username
-  invite             Generate an invite code (admin only)
-  invites            List all invite codes (admin only)
-  <text>             Just type — any unrecognized input is saved as a note
-  s <name_or_id>     Set session source (Tab to autocomplete)
-  s clear            Unset source — future notes have no source
-  s<id> +t <tags>    Add tag(s) to note (e.g. s2 +t cheese, bread)
-  s<id> -t <tags>    Remove tag(s) from note (e.g. s2 -t cheese)
-  e / edit <id>      Edit a note (arrow keys to modify, Enter to save)
-  del <id>           Delete a note (e.g. del 5)
-  t <tags>           Tag the last note (Tab to autocomplete)
-  find / f <query>   Search notes by text (case-insensitive)
-  b / ls             Browse all notes (rendered markdown)
-  ns <name>          New source for session (reuse existing or create via nse)
-  nse                Source entry interview (MLA-ish fields)
-  vs <name_or_id>    View/export notes by source
-  vt <tag>           View/export notes by tag
-  va <Last, First>   View/export notes by author
-  stadd <name>       Add a new source type
-  help               Show this help
-  exit               Quit
-
-Locator tokens (append to end of note):
-  p32       Page 32        pp. 10-15   Pages 10-15
-  t1:23:45  Time 1:23:45
-
-Example session:
-  > ns The Republic
-  > The cave allegory is profound p514
-  > t philosophy, epistemology
-  > s2 +t plato
-  > vs The Republic
-  > b
-""")
+    print(_("cmd.help.text"))
 
 
 # ─── note creation (no command prefix) ───
@@ -120,11 +83,11 @@ def cmd_note(session: Session, text: str):
     )
     session.record_note(note_id)
 
-    parts = [f"Saved note #{note_id}"]
+    parts = [_("cmd.note.saved", id=note_id)]
     if session.current_source_id:
         src = client.get_source(session.current_source_id)
         if src:
-            parts.append(f'linked to "{src["name"]}"')
+            parts.append(_("cmd.note.linked_to", name=src["name"]))
     if loc_type:
         parts.append(f"{loc_type}={loc_value}")
     print(" | ".join(parts))
@@ -137,41 +100,41 @@ def cmd_s(session: Session, arg: str):
     if not arg:
         sources = client.get_all_sources()
         if sources:
-            print("Sources:")
+            print(_("cmd.s.sources_header"))
             for src in sources:
                 marker = "*" if src["id"] == session.current_source_id else " "
                 print(f"  {marker} {src['id']}. {src['name']}")
         else:
-            print("No sources yet. Use: ns <name> to create one.")
+            print(_("cmd.s.no_sources"))
         if session.current_source_id:
             src = client.get_source(session.current_source_id)
             if src:
                 citation = client.build_citation(session.current_source_id)
-                print(f'Current: "{src["name"]}" (id:{src["id"]})')
+                print(_("cmd.s.current", name=src["name"], id=src["id"]))
                 if citation:
                     print(f"  {citation}")
         else:
-            print("No source set. Use: s <name_or_id>")
+            print(_("cmd.s.no_source_set"))
         return
 
     if arg.lower() in ("clear", "none"):
         session.current_source_id = None
-        print("Source cleared. Future notes will have no source.")
+        print(_("cmd.s.cleared"))
         return
 
     source_id = _resolve_source(arg)
     if source_id is None:
-        print(f'Source "{arg}" not found. Use ns <name> to create one.')
+        print(_("cmd.s.not_found", name=arg))
         return
 
     session.current_source_id = source_id
     src = client.get_source(source_id)
-    print(f'Source set: "{src["name"]}" (id:{source_id})')
+    print(_("cmd.s.source_set", name=src["name"], id=source_id))
 
     sourceless = client.get_sourceless_notes(session.session_note_ids)
     if sourceless:
         client.bulk_update_note_source(sourceless, source_id)
-        print(f"Linked {len(sourceless)} previous session note(s).")
+        print(_n("cmd.s.linked_one", "cmd.s.linked_other", len(sourceless)))
 
 
 # ─── s<id> +t / -t (add/remove tags on a note) ───
@@ -179,11 +142,11 @@ def cmd_s(session: Session, arg: str):
 def cmd_note_add_tags(note_id: int, tags_str: str):
     note = client.get_note(note_id)
     if not note:
-        print(f"Note #{note_id} not found.")
+        print(_("cmd.note.not_found", id=note_id))
         return
     names = [t.strip() for t in tags_str.split(",") if t.strip()]
     if not names:
-        print("No tags specified.")
+        print(_("cmd.tags.none_specified"))
         return
     added = []
     for name in names:
@@ -196,11 +159,11 @@ def cmd_note_add_tags(note_id: int, tags_str: str):
 def cmd_note_remove_tags(note_id: int, tags_str: str):
     note = client.get_note(note_id)
     if not note:
-        print(f"Note #{note_id} not found.")
+        print(_("cmd.note.not_found", id=note_id))
         return
     names = [t.strip() for t in tags_str.split(",") if t.strip()]
     if not names:
-        print("No tags specified.")
+        print(_("cmd.tags.none_specified"))
         return
     removed = []
     for name in names:
@@ -209,7 +172,7 @@ def cmd_note_remove_tags(note_id: int, tags_str: str):
             client.remove_tag_from_note(note_id, tag["id"])
             removed.append(name.lower())
         else:
-            print(f"Tag '{name}' not found.")
+            print(_("cmd.tag.not_found", name=name))
     if removed:
         print(f"#{note_id} -t {', '.join(removed)}")
 
@@ -219,22 +182,22 @@ def cmd_note_remove_tags(note_id: int, tags_str: str):
 def cmd_edit(note_id: int):
     note = client.get_note(note_id)
     if not note:
-        print(f"Note #{note_id} not found.")
+        print(_("cmd.note.not_found", id=note_id))
         return
     try:
-        new_body = prompt("Edit note: ", default=note["body"])
+        new_body = prompt(_("cmd.edit.prompt"), default=note["body"])
     except (EOFError, KeyboardInterrupt):
-        print("Cancelled.")
+        print(_("cmd.cancelled"))
         return
     new_body = new_body.strip()
     if not new_body:
-        print("Empty note — cancelled.")
+        print(_("cmd.edit.empty"))
         return
     if new_body == note["body"]:
-        print("No changes.")
+        print(_("cmd.edit.no_changes"))
         return
     client.update_note_body(note_id, new_body)
-    print(f"Updated note #{note_id}.")
+    print(_("cmd.edit.updated", id=note_id))
 
 
 # ─── del <id> (delete a note) ───
@@ -242,18 +205,18 @@ def cmd_edit(note_id: int):
 def cmd_note_delete(note_id: int):
     note = client.get_note(note_id)
     if not note:
-        print(f"Note #{note_id} not found.")
+        print(_("cmd.note.not_found", id=note_id))
         return
     ok = client.delete_note(note_id)
     if ok:
-        print(f"Deleted note #{note_id}:\n{note['body']}")
+        print(f"{_('cmd.del.deleted', id=note_id)}\n{note['body']}")
 
 
 # ─── t <tags> (tag last note) ───
 
 def cmd_t(session: Session, tags_str: str):
     if session.last_note_id is None:
-        print("No note created this session yet.")
+        print(_("cmd.t.no_note"))
         return
     cmd_note_add_tags(session.last_note_id, tags_str)
 
@@ -263,7 +226,7 @@ def cmd_t(session: Session, tags_str: str):
 def cmd_browse(export_dir: str):
     filepath, notes = export.export_all(export_dir)
     if not notes:
-        print("No notes yet.")
+        print(_("cmd.browse.no_notes"))
         return
     _open_file(filepath)
 
@@ -273,47 +236,47 @@ def cmd_browse(export_dir: str):
 def cmd_ns(session: Session, arg: str):
     name = arg.strip()
     if not name:
-        print("Usage: ns <source_name>")
+        print(_("cmd.ns.usage"))
         return
 
     source_id = _resolve_source(name)
     if source_id:
         session.current_source_id = source_id
         src = client.get_source(source_id)
-        print(f'Source set: "{src["name"]}" (id:{source_id})')
+        print(_("cmd.s.source_set", name=src["name"], id=source_id))
         return
 
     source_id = cmd_nse(prefilled_name=name)
     if source_id:
         session.current_source_id = source_id
-        print(f'Source set: id:{source_id}')
+        print(_("cmd.nse.source_set", id=source_id))
 
 
 # ─── nse (source entry interview - the ONLY interactive mode) ───
 
 def cmd_nse(prefilled_name: str | None = None) -> int | None:
-    print("=== Source Entry Interview ===")
+    print(_("cmd.nse.title"))
 
     if prefilled_name:
         name = prefilled_name
-        print(f"Source title: {name}")
+        print(_("cmd.nse.source_title") + name)
     else:
         try:
-            name = prompt("Source title: ").strip()
+            name = prompt(_("cmd.nse.source_title")).strip()
         except (EOFError, KeyboardInterrupt):
-            print("Cancelled.")
+            print(_("cmd.cancelled"))
             return None
         if not name:
-            print("Cancelled.")
+            print(_("cmd.cancelled"))
             return None
 
     # Source type
     types = client.get_source_types()
-    print("Source types:")
+    print(_("cmd.nse.source_types"))
     for t in types:
         print(f"  {t['id']}. {t['name']}")
     try:
-        type_input = prompt("Source type (name or #, Enter to skip): ",
+        type_input = prompt(_("cmd.nse.source_type_prompt"),
                            completer=SourceTypeCompleter()).strip()
     except (EOFError, KeyboardInterrupt):
         type_input = ""
@@ -330,24 +293,25 @@ def cmd_nse(prefilled_name: str | None = None) -> int | None:
                     source_type_id = t["id"]
                     break
 
-    def ask(label: str, completer=None) -> str | None:
+    def ask(key: str, completer=None) -> str | None:
         try:
-            val = prompt(f"{label} (Enter to skip): ", completer=completer).strip()
+            val = prompt(_("cmd.nse.field_prompt", field=_(key)),
+                        completer=completer).strip()
         except (EOFError, KeyboardInterrupt):
             return None
         return val or None
 
-    year = ask("Year/date")
-    url = ask("URL")
-    accessed_date = ask("Accessed date")
-    edition = ask("Edition")
-    pages = ask("Pages (range)")
-    extra_notes = ask("Extra notes")
+    year = ask("cmd.nse.year")
+    url = ask("cmd.nse.url")
+    accessed_date = ask("cmd.nse.accessed_date")
+    edition = ask("cmd.nse.edition")
+    pages = ask("cmd.nse.pages")
+    extra_notes = ask("cmd.nse.extra_notes")
 
-    pub_name = ask("Publisher name", completer=PublisherCompleter())
+    pub_name = ask("cmd.nse.publisher_name", completer=PublisherCompleter())
     publisher_id = None
     if pub_name:
-        pub_city = ask("Publisher city", completer=PublisherCityCompleter())
+        pub_city = ask("cmd.nse.publisher_city", completer=PublisherCityCompleter())
         publisher_id = client.get_or_create_publisher(pub_name, pub_city)
 
     source_id = client.create_source(
@@ -359,30 +323,30 @@ def cmd_nse(prefilled_name: str | None = None) -> int | None:
         extra_notes=extra_notes,
         publisher_id=publisher_id,
     )
-    print(f"Source created: #{source_id} - {name}")
+    print(_("cmd.nse.source_created", id=source_id, name=name))
 
-    print("Add authors (empty last name to stop):")
+    print(_("cmd.nse.add_authors"))
     order = 0
     while True:
         try:
-            last = prompt(f"  Author {order+1} last name: ",
+            last = prompt(_("cmd.nse.author_last", n=order+1),
                          completer=AuthorLastNameCompleter()).strip()
         except (EOFError, KeyboardInterrupt):
             break
         if not last:
             break
         try:
-            first = prompt(f"  Author {order+1} first name: ",
+            first = prompt(_("cmd.nse.author_first", n=order+1),
                           completer=AuthorFirstNameCompleter()).strip()
         except (EOFError, KeyboardInterrupt):
             first = ""
         client.add_author(source_id, first, last, order)
-        print(f"    Added: {last}, {first}")
+        print(_("cmd.nse.author_added", last=last, first=first))
         order += 1
 
     citation = client.build_citation(source_id)
     if citation:
-        print(f"Citation: {citation}")
+        print(_("cmd.nse.citation", citation=citation))
 
     return source_id
 
@@ -392,14 +356,14 @@ def cmd_nse(prefilled_name: str | None = None) -> int | None:
 def cmd_vs(export_dir: str, arg: str):
     arg = arg.strip()
     if not arg:
-        print("Usage: vs <source_name_or_id>")
+        print(_("cmd.vs.usage"))
         return
     source_id = _resolve_source(arg)
     if source_id is None:
-        print(f'Source "{arg}" not found.')
+        print(_("cmd.vs.not_found", name=arg))
         return
     filepath, notes = export.export_by_source(source_id, export_dir)
-    print(f"Export: {filepath} ({len(notes)} notes)")
+    print(_("cmd.export.info", path=filepath, count=len(notes)))
     _open_file(filepath)
 
 
@@ -408,14 +372,14 @@ def cmd_vs(export_dir: str, arg: str):
 def cmd_vt(export_dir: str, arg: str):
     arg = arg.strip()
     if not arg:
-        print("Usage: vt <tag_name>")
+        print(_("cmd.vt.usage"))
         return
     tag = client.get_tag_by_name(arg)
     if not tag:
-        print(f'Tag "{arg}" not found.')
+        print(_("cmd.vt.not_found", name=arg))
         return
     filepath, notes = export.export_by_tag(tag["id"], export_dir)
-    print(f"Export: {filepath} ({len(notes)} notes)")
+    print(_("cmd.export.info", path=filepath, count=len(notes)))
     _open_file(filepath)
 
 
@@ -424,7 +388,7 @@ def cmd_vt(export_dir: str, arg: str):
 def cmd_va(export_dir: str, arg: str):
     arg = arg.strip()
     if not arg:
-        print("Usage: va <Last, First>")
+        print(_("cmd.va.usage"))
         return
     if "," in arg:
         parts = arg.split(",", 1)
@@ -436,9 +400,9 @@ def cmd_va(export_dir: str, arg: str):
 
     filepath, notes = export.export_by_author(author_last, author_first, export_dir)
     if not notes:
-        print(f'No notes found for author "{arg}".')
+        print(_("cmd.va.not_found", name=arg))
         return
-    print(f"Export: {filepath} ({len(notes)} notes)")
+    print(_("cmd.export.info", path=filepath, count=len(notes)))
     _open_file(filepath)
 
 
@@ -447,14 +411,14 @@ def cmd_va(export_dir: str, arg: str):
 def cmd_find(export_dir: str, query: str):
     query = query.strip()
     if not query:
-        print("Usage: find <query>")
+        print(_("cmd.find.usage"))
         return
     notes = client.search_notes(query)
     if not notes:
-        print(f'No notes matching "{query}".')
+        print(_("cmd.find.no_results", query=query))
         return
     filepath = export.export_search_results(query, notes, export_dir)
-    print(f'Found {len(notes)} note(s) matching "{query}"')
+    print(_n("cmd.find.found_one", "cmd.find.found_other", len(notes), query=query))
     _open_file(filepath)
 
 
@@ -463,91 +427,91 @@ def cmd_find(export_dir: str, query: str):
 def cmd_stadd(arg: str):
     name = arg.strip()
     if not name:
-        print("Usage: stadd <type_name>")
+        print(_("cmd.stadd.usage"))
         return
     try:
         tid = client.create_source_type(name)
-        print(f"Source type created: #{tid} - {name}")
+        print(_("cmd.stadd.created", id=tid, name=name))
     except client.ConflictError:
-        print(f"Source type '{name}' already exists.")
+        print(_("cmd.stadd.exists", name=name))
 
 
 # ─── auth commands ───
 
 def cmd_login(session: Session):
     try:
-        username = input("Username: ").strip()
-        password = getpass.getpass("Password: ")
+        username = input(_("cmd.login.username")).strip()
+        password = getpass.getpass(_("cmd.login.password"))
     except (EOFError, KeyboardInterrupt):
-        print("\nCancelled.")
+        print(f"\n{_('cmd.cancelled')}")
         return
     if not username or not password:
-        print("Cancelled.")
+        print(_("cmd.cancelled"))
         return
     try:
         data = client.login(username, password)
         session.reset()
-        print(f"Logged in as {data['username']}.")
+        print(_("cmd.login.success", username=data['username']))
     except ValueError as e:
-        print(f"Login failed: {e}")
+        print(_("cmd.login.failed", detail=e))
 
 
 def cmd_register(session: Session):
     try:
-        username = input("Choose username: ").strip()
-        password = getpass.getpass("Choose password (min 6 chars): ")
-        confirm = getpass.getpass("Confirm password: ")
-        invite_code = input("Invite code: ").strip()
+        username = input(_("cmd.register.username")).strip()
+        password = getpass.getpass(_("cmd.register.password"))
+        confirm = getpass.getpass(_("cmd.register.confirm"))
+        invite_code = input(_("cmd.register.invite_code")).strip()
     except (EOFError, KeyboardInterrupt):
-        print("\nCancelled.")
+        print(f"\n{_('cmd.cancelled')}")
         return
     if not username or not password:
-        print("Cancelled.")
+        print(_("cmd.cancelled"))
         return
     if password != confirm:
-        print("Passwords do not match.")
+        print(_("cmd.password_mismatch"))
         return
     try:
         data = client.register(username, password, invite_code)
         session.reset()
-        print(f"Registered and logged in as {data['username']}.")
+        print(_("cmd.register.success", username=data['username']))
     except client.ConflictError:
-        print("Username already taken.")
+        print(_("cmd.register.taken"))
     except ValueError as e:
-        print(f"Registration failed: {e}")
+        print(_("cmd.register.failed", detail=e))
 
 
 def cmd_change_password():
     try:
-        current = getpass.getpass("Current password: ")
-        new_pw = getpass.getpass("New password (min 6 chars): ")
-        confirm = getpass.getpass("Confirm new password: ")
+        current = getpass.getpass(_("cmd.passwd.current"))
+        new_pw = getpass.getpass(_("cmd.passwd.new"))
+        confirm = getpass.getpass(_("cmd.passwd.confirm"))
     except (EOFError, KeyboardInterrupt):
-        print("\nCancelled.")
+        print(f"\n{_('cmd.cancelled')}")
         return
     if not current or not new_pw:
-        print("Cancelled.")
+        print(_("cmd.cancelled"))
         return
     if new_pw != confirm:
-        print("Passwords do not match.")
+        print(_("cmd.password_mismatch"))
         return
     try:
         client.change_password(current, new_pw)
-        print("Password changed successfully.")
+        print(_("cmd.passwd.success"))
     except ValueError as e:
-        print(f"Failed: {e}")
+        print(_("cmd.passwd.failed", detail=e))
 
 
 def cmd_invite():
     try:
         code = client.create_invite_code()
-        print(f"Invite code: {code}")
+        print(_("cmd.invite.code", code=code))
     except client.BackendError:
-        print("Failed to create invite code.")
+        print(_("cmd.invite.failed"))
     except Exception as e:
         detail = str(e)
         if "403" in detail:
-            print("Only the invite admin can create invite codes.")
+            print(_("cmd.invite.admin_only"))
         else:
             raise
 
@@ -558,14 +522,14 @@ def cmd_invites():
     except Exception as e:
         detail = str(e)
         if "403" in detail:
-            print("Only the invite admin can view invite codes.")
+            print(_("cmd.invites.admin_only"))
             return
         raise
     if not codes:
-        print("No invite codes yet.")
+        print(_("cmd.invites.none"))
         return
     for c in codes:
-        status = f"used by user #{c['used_by']}" if c.get("used_by") else "available"
+        status = _("cmd.invites.used", id=c['used_by']) if c.get("used_by") else _("cmd.invites.available")
         print(f"  {c['code']}  ({status})")
 
 
@@ -577,7 +541,22 @@ def cmd_whoami():
 def cmd_logout(session: Session):
     client.logout()
     session.reset()
-    print("Logged out.")
+    print(_("cmd.logout.success"))
+
+
+# ─── lang ───
+
+def cmd_lang(arg: str):
+    arg = arg.strip()
+    if not arg:
+        print(_("lang.current", lang=i18n.get_lang()))
+        return
+    try:
+        i18n.set_lang(arg)
+        print(_("lang.changed", lang=arg))
+    except ValueError:
+        available = ", ".join(i18n.available_langs())
+        print(_("lang.invalid", code=arg, available=available))
 
 
 # ─── command parser ───
@@ -594,7 +573,7 @@ def dispatch(user_input: str, session: Session, export_dir: str) -> bool:
     cmd = stripped.upper()
 
     if cmd in ("EXIT", "QUIT"):
-        print("Bye!")
+        print(_("cmd.bye"))
         return False
 
     if cmd == "HELP":
@@ -612,9 +591,15 @@ def dispatch(user_input: str, session: Session, export_dir: str) -> bool:
         cmd_logout(session)
         return True
 
+    # Language command — no login required
+    parts_lang = stripped.split(None, 1)
+    if parts_lang[0].upper() == "LANG":
+        cmd_lang(parts_lang[1] if len(parts_lang) > 1 else "")
+        return True
+
     # All other commands require authentication
     if not client.is_authenticated():
-        print("Not logged in. Type 'login' or 'register' first.")
+        print(_("cmd.not_logged_in"))
         return True
 
     if cmd in ("CHANGE_PASSWORD", "PASSWD"):
@@ -633,7 +618,7 @@ def dispatch(user_input: str, session: Session, export_dir: str) -> bool:
     try:
         return _dispatch_data(stripped, cmd, session, export_dir)
     except client.AuthExpiredError:
-        print("Session expired. Please 'login' again.")
+        print(_("cmd.session_expired"))
         client.clear_token()
         session.reset()
         return True
@@ -649,7 +634,7 @@ def _dispatch_data(stripped: str, cmd: str, session: Session, export_dir: str) -
         source_id = cmd_nse()
         if source_id:
             session.current_source_id = source_id
-            print(f'Source set: id:{source_id}')
+            print(_("cmd.nse.source_set", id=source_id))
         return True
 
     # s<id> +t / -t
@@ -687,12 +672,12 @@ def _dispatch_data(stripped: str, cmd: str, session: Session, export_dir: str) -
         cmd_stadd(arg)
     elif prefix in ("E", "EDIT"):
         if not arg.isdigit():
-            print("Usage: e <note_id>")
+            print(_("cmd.edit.usage"))
         else:
             cmd_edit(int(arg))
     elif prefix == "DEL":
         if not arg.isdigit():
-            print("Usage: del <note_id>")
+            print(_("cmd.del.usage"))
         else:
             cmd_note_delete(int(arg))
     else:

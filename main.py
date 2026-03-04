@@ -15,6 +15,8 @@ from prompt_toolkit.input.vt100_parser import _IS_PREFIX_OF_LONGER_MATCH_CACHE
 from prompt_toolkit.keys import Keys
 
 import client
+import i18n
+from i18n import _
 
 # Map Shift+Enter (kitty/CSI u protocol from WezTerm) to Ctrl+J
 ANSI_SEQUENCES["\x1b[13;2u"] = Keys.ControlJ
@@ -30,13 +32,14 @@ EXPORT_DIR = os.environ.get("EXPORT_DIR", "./exports")
 
 
 def main():
+    i18n.init()
     client.init(BACKEND_URL)
 
     try:
         client.health()
     except (httpx.NetworkError, httpx.TimeoutException, httpx.HTTPStatusError):
-        print("Error: SnippetsBackend is not reachable.")
-        print("Make sure the backend is running (docker compose up --build).")
+        print(_("main.backend_unreachable"))
+        print(_("main.backend_hint"))
         return
 
     session = Session()
@@ -52,16 +55,16 @@ def main():
     def _insert_newline(event):
         event.current_buffer.insert_text("\n")
 
-    print("Snippets CLI ready. Type 'help' for commands.")
+    print(_("main.ready"))
     if client.is_authenticated():
         try:
             user = client.me()
-            print(f"Logged in as {user['username']}.")
+            print(_("main.logged_in_as", username=user['username']))
         except client.AuthExpiredError:
-            print("Session expired. Please 'login' again.")
+            print(_("main.session_expired"))
             client.clear_token()
     else:
-        print("Not logged in. Type 'login' or 'register' to get started.")
+        print(_("main.not_logged_in"))
 
     while True:
         try:
@@ -72,23 +75,23 @@ def main():
                     if src:
                         src_label = f' [{src["name"][:20]}]'
             except (httpx.NetworkError, httpx.TimeoutException):
-                src_label = " [offline]"
+                src_label = f" [{_('main.offline')}]"
 
             user_input = prompt(f"snippets{src_label}> ", history=history,
                                 completer=completer, complete_while_typing=False,
                                 key_bindings=kb)
         except (EOFError, KeyboardInterrupt):
-            print("\nBye!")
+            print(f"\n{_('main.bye')}")
             break
 
         try:
             if not dispatch(user_input, session, EXPORT_DIR):
                 break
         except (httpx.NetworkError, httpx.TimeoutException):
-            print("Error: SnippetsBackend is not reachable.")
-            print("Check that the backend is still running.")
+            print(_("main.backend_unreachable"))
+            print(_("main.backend_check"))
         except client.BackendError as e:
-            print(f"Error: {e}")
+            print(_("main.error", detail=e))
 
 
 if __name__ == "__main__":

@@ -1,0 +1,139 @@
+{
+  "main.backend_unreachable": "Erro: o SnippetsBackend não está acessível.",
+  "main.backend_hint": "Certifique-se de que o backend está a correr (docker compose up --build).",
+  "main.backend_check": "Verifique se o backend ainda está a correr.",
+  "main.ready": "Snippets CLI pronto. Escreva 'help' para ver os comandos.",
+  "main.logged_in_as": "Sessão iniciada como {username}.",
+  "main.session_expired": "Sessão expirada. Por favor, faça 'login' novamente.",
+  "main.not_logged_in": "Sessão não iniciada. Escreva 'login' ou 'register' para começar.",
+  "main.offline": "offline",
+  "main.bye": "Adeus!",
+  "main.error": "Erro: {detail}",
+
+  "cmd.bye": "Adeus!",
+  "cmd.not_logged_in": "Sessão não iniciada. Escreva 'login' ou 'register' primeiro.",
+  "cmd.session_expired": "Sessão expirada. Por favor, faça 'login' novamente.",
+  "cmd.cancelled": "Cancelado.",
+
+  "cmd.help.text": "\nComandos:\n  login              Iniciar sessão na sua conta\n  register           Criar uma nova conta\n  logout             Terminar sessão (apagar token guardado)\n  change_password    Alterar a palavra-passe (alias: passwd)\n  whoami             Mostrar o utilizador atual\n  invite             Gerar um código de convite (apenas admin)\n  invites            Listar todos os códigos de convite (apenas admin)\n  lang               Mostrar/alterar o idioma de apresentação\n  <texto>            Basta escrever — qualquer texto não reconhecido é guardado como nota\n  s <nome_ou_id>     Definir fonte da sessão (Tab para autocompletar)\n  s clear            Limpar fonte — notas futuras ficam sem fonte\n  s<id> +t <tags>    Adicionar tag(s) a uma nota (ex.: s2 +t queijo, pão)\n  s<id> -t <tags>    Remover tag(s) de uma nota (ex.: s2 -t queijo)\n  e / edit <id>      Editar uma nota (setas para modificar, Enter para guardar)\n  del <id>           Apagar uma nota (ex.: del 5)\n  t <tags>           Adicionar tags à última nota (Tab para autocompletar)\n  find / f <query>   Pesquisar notas por texto (sem distinção maiúsc./minúsc.)\n  b / ls             Navegar por todas as notas (markdown renderizado)\n  ns <nome>          Nova fonte para a sessão (reutilizar existente ou criar via nse)\n  nse                Entrevista de entrada de fonte (campos estilo MLA)\n  vs <nome_ou_id>    Ver/exportar notas por fonte\n  vt <tag>           Ver/exportar notas por tag\n  va <Apelido, Nome> Ver/exportar notas por autor\n  stadd <nome>       Adicionar um novo tipo de fonte\n  help               Mostrar esta ajuda\n  exit               Sair\n\nTokens de localização (adicionar ao fim da nota):\n  p32       Página 32       pp. 10-15   Páginas 10-15\n  t1:23:45  Tempo 1:23:45\n\nExemplo de sessão:\n  > ns The Republic\n  > The cave allegory is profound p514\n  > t philosophy, epistemology\n  > s2 +t plato\n  > vs The Republic\n  > b\n",
+
+  "cmd.note.saved": "Nota #{id} guardada",
+  "cmd.note.linked_to": "associada a \"{name}\"",
+  "cmd.note.not_found": "Nota #{id} não encontrada.",
+
+  "cmd.s.sources_header": "Fontes:",
+  "cmd.s.no_sources": "Ainda não há fontes. Use: ns <nome> para criar uma.",
+  "cmd.s.current": "Atual: \"{name}\" (id:{id})",
+  "cmd.s.no_source_set": "Nenhuma fonte definida. Use: s <nome_ou_id>",
+  "cmd.s.cleared": "Fonte limpa. As notas futuras ficarão sem fonte.",
+  "cmd.s.not_found": "Fonte \"{name}\" não encontrada. Use ns <nome> para criar uma.",
+  "cmd.s.source_set": "Fonte definida: \"{name}\" (id:{id})",
+  "cmd.s.linked_one": "{count} nota anterior da sessão foi associada.",
+  "cmd.s.linked_other": "{count} notas anteriores da sessão foram associadas.",
+
+  "cmd.tags.none_specified": "Nenhuma tag especificada.",
+  "cmd.tag.not_found": "Tag '{name}' não encontrada.",
+
+  "cmd.edit.prompt": "Editar nota: ",
+  "cmd.edit.empty": "Nota vazia — cancelado.",
+  "cmd.edit.no_changes": "Sem alterações.",
+  "cmd.edit.updated": "Nota #{id} atualizada.",
+  "cmd.edit.usage": "Uso: e <id_da_nota>",
+
+  "cmd.del.deleted": "Nota #{id} apagada:",
+  "cmd.del.usage": "Uso: del <id_da_nota>",
+
+  "cmd.t.no_note": "Nenhuma nota criada nesta sessão ainda.",
+
+  "cmd.browse.no_notes": "Ainda não há notas.",
+
+  "cmd.ns.usage": "Uso: ns <nome_da_fonte>",
+
+  "cmd.nse.title": "=== Entrevista de Entrada de Fonte ===",
+  "cmd.nse.source_title": "Título da fonte: ",
+  "cmd.nse.source_types": "Tipos de fonte:",
+  "cmd.nse.source_type_prompt": "Tipo de fonte (nome ou #, Enter para saltar): ",
+  "cmd.nse.field_prompt": "{field} (Enter para saltar): ",
+  "cmd.nse.year": "Ano/data",
+  "cmd.nse.url": "URL",
+  "cmd.nse.accessed_date": "Data de acesso",
+  "cmd.nse.edition": "Edição",
+  "cmd.nse.pages": "Páginas (intervalo)",
+  "cmd.nse.extra_notes": "Notas extra",
+  "cmd.nse.publisher_name": "Nome da editora",
+  "cmd.nse.publisher_city": "Cidade da editora",
+  "cmd.nse.source_created": "Fonte criada: #{id} - {name}",
+  "cmd.nse.add_authors": "Adicionar autores (apelido vazio para parar):",
+  "cmd.nse.author_last": "  Apelido do autor {n}: ",
+  "cmd.nse.author_first": "  Nome do autor {n}: ",
+  "cmd.nse.author_added": "    Adicionado: {last}, {first}",
+  "cmd.nse.citation": "Citação: {citation}",
+  "cmd.nse.source_set": "Fonte definida: id:{id}",
+
+  "cmd.vs.usage": "Uso: vs <nome_ou_id_da_fonte>",
+  "cmd.vs.not_found": "Fonte \"{name}\" não encontrada.",
+  "cmd.export.info": "Exportação: {path} ({count} notas)",
+
+  "cmd.vt.usage": "Uso: vt <nome_da_tag>",
+  "cmd.vt.not_found": "Tag \"{name}\" não encontrada.",
+
+  "cmd.va.usage": "Uso: va <Apelido, Nome>",
+  "cmd.va.not_found": "Nenhuma nota encontrada para o autor \"{name}\".",
+
+  "cmd.find.usage": "Uso: find <pesquisa>",
+  "cmd.find.no_results": "Nenhuma nota correspondente a \"{query}\".",
+  "cmd.find.found_one": "{count} nota encontrada para \"{query}\"",
+  "cmd.find.found_other": "{count} notas encontradas para \"{query}\"",
+
+  "cmd.stadd.usage": "Uso: stadd <nome_do_tipo>",
+  "cmd.stadd.created": "Tipo de fonte criado: #{id} - {name}",
+  "cmd.stadd.exists": "O tipo de fonte '{name}' já existe.",
+
+  "cmd.login.username": "Nome de utilizador: ",
+  "cmd.login.password": "Palavra-passe: ",
+  "cmd.login.success": "Sessão iniciada como {username}.",
+  "cmd.login.failed": "Falha no login: {detail}",
+
+  "cmd.register.username": "Escolha um nome de utilizador: ",
+  "cmd.register.password": "Escolha uma palavra-passe (mín. 6 caracteres): ",
+  "cmd.register.confirm": "Confirmar palavra-passe: ",
+  "cmd.register.invite_code": "Código de convite: ",
+  "cmd.register.success": "Registado e sessão iniciada como {username}.",
+  "cmd.register.taken": "Nome de utilizador já em uso.",
+  "cmd.register.failed": "Falha no registo: {detail}",
+
+  "cmd.password_mismatch": "As palavras-passe não coincidem.",
+
+  "cmd.passwd.current": "Palavra-passe atual: ",
+  "cmd.passwd.new": "Nova palavra-passe (mín. 6 caracteres): ",
+  "cmd.passwd.confirm": "Confirmar nova palavra-passe: ",
+  "cmd.passwd.success": "Palavra-passe alterada com sucesso.",
+  "cmd.passwd.failed": "Falha: {detail}",
+
+  "cmd.invite.code": "Código de convite: {code}",
+  "cmd.invite.failed": "Falha ao criar código de convite.",
+  "cmd.invite.admin_only": "Apenas o administrador de convites pode criar códigos de convite.",
+
+  "cmd.invites.admin_only": "Apenas o administrador de convites pode ver os códigos de convite.",
+  "cmd.invites.none": "Ainda não há códigos de convite.",
+  "cmd.invites.available": "disponível",
+  "cmd.invites.used": "usado pelo utilizador #{id}",
+
+  "cmd.logout.success": "Sessão terminada.",
+
+  "export.note_label": "Nota #{id}",
+  "export.created": "Criada em: {date}",
+  "export.tags": "Tags: {tags}",
+  "export.source": "Fonte: {name}",
+  "export.citation": "Citação: {citation}",
+  "export.notes_count_one": "{count} nota",
+  "export.notes_count_other": "{count} notas",
+  "export.notes_sources_count": "{notes} notas em {sources} fontes",
+  "export.tag_heading": "Tag: {name}",
+  "export.search_heading": "Pesquisa: {query}",
+  "export.author_heading": "Autor: {last}, {first}",
+
+  "lang.current": "Idioma atual: {lang}",
+  "lang.changed": "Idioma alterado para {lang}.",
+  "lang.invalid": "Idioma desconhecido '{code}'. Disponíveis: {available}"
+}
