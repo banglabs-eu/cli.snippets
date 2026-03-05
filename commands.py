@@ -9,9 +9,11 @@ from prompt_toolkit import prompt
 
 import getpass
 
+import cache
 import client
 import export
 import i18n
+import offline
 from i18n import _, _n
 from locator import parse_locator
 from session import Session
@@ -452,6 +454,8 @@ def cmd_login(session: Session):
         data = client.login(username, password)
         session.reset()
         print(_("cmd.login.success", username=data['username']))
+        cache.refresh()
+        _try_sync_after_login()
     except ValueError as e:
         print(_("cmd.login.failed", detail=e))
 
@@ -559,6 +563,78 @@ def cmd_lang(arg: str):
         print(_("lang.invalid", code=arg, available=available))
 
 
+# ─── sync ───
+
+def _try_sync_after_login():
+    if not offline.has_offline_notes():
+        return
+    store = offline.OfflineStore()
+    n = store.count()
+    if n == 0:
+        return
+    print(_("main.offline_found", count=n))
+    try:
+        answer = input(_("main.sync_prompt")).strip().lower()
+    except (EOFError, KeyboardInterrupt):
+        print()
+        return
+    if answer not in ("y", "yes"):
+        return
+    try:
+        synced = offline.sync_offline_notes()
+        print(_("main.sync_done", count=synced))
+    except Exception as e:
+        print(_("main.sync_failed", detail=e))
+
+
+# ─── offline commands ───
+
+def cmd_note_offline(session: Session, text: str):
+    text = text.strip()
+    if not text:
+        return
+    body, loc_type, loc_value = parse_locator(text)
+    local_id = session.offline_store.add_note(
+        body,
+        source_name=session.current_source_name,
+        locator_type=loc_type,
+        locator_value=loc_value,
+    )
+    parts = [_("cmd.note.saved_offline", n=local_id)]
+    if session.current_source_name:
+        parts.append(_("cmd.note.linked_to", name=session.current_source_name))
+    if loc_type:
+        parts.append(f"{loc_type}={loc_value}")
+    print(" | ".join(parts))
+
+
+def cmd_s_offline(session: Session, arg: str):
+    arg = arg.strip()
+    if not arg:
+        if session.current_source_name:
+            print(_("cmd.s.current_offline", name=session.current_source_name))
+        else:
+            print(_("cmd.s.no_source_set"))
+        return
+    if arg.lower() in ("clear", "none"):
+        session.current_source_name = None
+        print(_("cmd.s.cleared"))
+        return
+    session.current_source_name = arg
+    print(_("cmd.s.source_set_offline", name=arg))
+
+
+def cmd_t_offline(session: Session, tags_str: str):
+    names = [t.strip() for t in tags_str.split(",") if t.strip()]
+    if not names:
+        print(_("cmd.tags.none_specified"))
+        return
+    if not session.offline_store.add_tags_to_last(names):
+        print(_("cmd.t.no_note"))
+        return
+    print(f"+t {', '.join(n.lower() for n in names)}")
+
+
 # ─── command parser ───
 
 _NOTE_TAG_RE = re.compile(r'^s(\d+)\s+([+-]t)\s+(.+)$', re.IGNORECASE)
@@ -580,6 +656,16 @@ def dispatch(user_input: str, session: Session, export_dir: str) -> bool:
         cmd_help()
         return True
 
+    # Language command — no login required
+    parts_lang = stripped.split(None, 1)
+    if parts_lang[0].upper() == "LANG":
+        cmd_lang(parts_lang[1] if len(parts_lang) > 1 else "")
+        return True
+
+    # Offline mode — limited commands
+    if session.offline_mode:
+        return _dispatch_offline(stripped, cmd, session)
+
     # Auth commands — always available
     if cmd == "LOGIN":
         cmd_login(session)
@@ -589,12 +675,6 @@ def dispatch(user_input: str, session: Session, export_dir: str) -> bool:
         return True
     if cmd == "LOGOUT":
         cmd_logout(session)
-        return True
-
-    # Language command — no login required
-    parts_lang = stripped.split(None, 1)
-    if parts_lang[0].upper() == "LANG":
-        cmd_lang(parts_lang[1] if len(parts_lang) > 1 else "")
         return True
 
     # All other commands require authentication
@@ -622,6 +702,22 @@ def dispatch(user_input: str, session: Session, export_dir: str) -> bool:
         client.clear_token()
         session.reset()
         return True
+
+
+def _dispatch_offline(stripped: str, cmd: str, session: Session) -> bool:
+    """Dispatch commands in offline mode."""
+    parts = stripped.split(None, 1)
+    prefix = parts[0].upper()
+    arg = parts[1] if len(parts) > 1 else ""
+
+    if prefix == "S":
+        cmd_s_offline(session, arg)
+    elif prefix == "T":
+        cmd_t_offline(session, arg)
+    else:
+        cmd_note_offline(session, stripped)
+
+    return True
 
 
 def _dispatch_data(stripped: str, cmd: str, session: Session, export_dir: str) -> bool:

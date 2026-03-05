@@ -1,8 +1,12 @@
-"""prompt_toolkit completers backed by the API client."""
+"""prompt_toolkit completers backed by the API client (or local cache when offline)."""
 
 import re
 from prompt_toolkit.completion import Completer, Completion
+import cache
 import client
+
+# Set to True by main.py when running in offline mode
+offline_mode = False
 
 
 class SourceCompleter(Completer):
@@ -182,27 +186,30 @@ class ReplCompleter(Completer):
             yield from self._complete_authors(arg)
 
     def _complete_sources(self, prefix):
+        mod = cache if offline_mode else client
         if prefix:
-            sources = client.search_sources(prefix)
+            sources = mod.search_sources(prefix)
         else:
-            sources = client.get_recent_sources()
+            sources = mod.get_recent_sources()
         for s in sources:
             yield Completion(s["name"], start_position=-len(prefix),
                              display_meta=f'id:{s["id"]}')
 
     def _complete_tags(self, prefix):
+        mod = cache if offline_mode else client
         if prefix:
-            tags = client.search_tags(prefix)
+            tags = mod.search_tags(prefix)
         else:
-            tags = client.get_recent_tags()
+            tags = mod.get_recent_tags()
         for t in tags:
             yield Completion(t["name"], start_position=-len(prefix))
 
     def _complete_authors(self, prefix):
+        mod = cache if offline_mode else client
         if prefix:
-            authors = client.search_authors(prefix)
+            authors = mod.search_authors(prefix)
         else:
-            authors = client.get_recent_authors()
+            authors = mod.get_recent_authors()
         seen = set()
         for a in authors:
             display = f'{a["last_name"]}, {a["first_name"]}'
