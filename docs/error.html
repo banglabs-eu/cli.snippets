@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="shared.css">
   <script>
   (function(){
+    var p=new URLSearchParams(location.search).get('theme');
+    if(p==='light'||p==='dark'){localStorage.setItem('snippets-theme',p);document.documentElement.setAttribute('data-theme',p);return}
     var t=localStorage.getItem('snippets-theme');
     if(t)document.documentElement.setAttribute('data-theme',t);
     if(window.matchMedia('(prefers-color-scheme:light)').matches)

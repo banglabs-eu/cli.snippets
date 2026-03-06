@@ -11,6 +11,8 @@
 <link rel="stylesheet" href="index.css">
 <script>
 (function(){
+  var p=new URLSearchParams(location.search).get('theme');
+  if(p==='light'||p==='dark'){localStorage.setItem('snippets-theme',p);document.documentElement.setAttribute('data-theme',p);return}
   var t=localStorage.getItem('snippets-theme');
   if(t)document.documentElement.setAttribute('data-theme',t);
   if(window.matchMedia('(prefers-color-scheme:light)').matches)
@@ -1326,6 +1328,24 @@ themeToggle.addEventListener('click', function () {
     document.documentElement.removeAttribute('data-theme');
     localStorage.removeItem('snippets-theme');
   }
+});
+
+/* ═══════════════════════════════════════════
+   CROSS-PROJECT THEME CARRY-OVER
+   ═══════════════════════════════════════════ */
+var SIBLING_DOMAINS = ['snippets.eu','cli.snippets.eu','web.snippets.eu','glyphclock.bang-labs.eu'];
+document.addEventListener('click', function (e) {
+  var a = e.target.closest('a[href]');
+  if (!a) return;
+  try {
+    var url = new URL(a.href);
+    if (url.hostname === location.hostname) return;
+    if (SIBLING_DOMAINS.indexOf(url.hostname) === -1) return;
+    var theme = document.documentElement.getAttribute('data-theme');
+    if (!theme) theme = document.documentElement.classList.contains('prefers-light') ? 'light' : 'dark';
+    url.searchParams.set('theme', theme);
+    a.href = url.toString();
+  } catch (err) {}
 });
 
 /* ═══════════════════════════════════════════
