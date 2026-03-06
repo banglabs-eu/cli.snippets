@@ -81,3 +81,14 @@ locator.py  →  Regex parser for page (p32, pp. 10-15) and time (t1:23:45) toke
 | `BACKEND_URL` | `http://localhost:5000` | Backend API base URL |
 | `EXPORT_DIR` | `./exports` | Markdown export output directory |
 | `SNIPPETS_LANG` | `en` | Display language (en, de, fr, es, it, pt) |
+
+## Brand Consistency
+
+Follow the terminology, feature names, fonts, and copy voice defined in website.snippets (the marketing site). When writing user-facing text or docs:
+
+- **Terminology**: note, source, tag, locator, citation, knowledge base, export, session, offline mode — use these exact words, not synonyms.
+- **Feature names**: Inline notes, Source management, Smart tagging, Full-text search, Markdown export, Multi-user, Offline mode.
+- **Fonts** (for doc sites/HTML): Playfair Display (headings), Inter (body), JetBrains Mono (code).
+- **Design tokens**: accent #6366f1 (indigo), dark bg #0a0e17, border #1e293b, radius 12px/16px.
+- **Copy voice**: Short declarative sentences. "What it does — how/why." No fluff or superlatives.
+- **Product names**: Snippets (platform), cli.snippets/CLI (Input), web.snippets/Web (Explore), Snippets API (backend), Bang Labs (parent org).
