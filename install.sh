@@ -117,6 +117,19 @@ if [ ! -d "$VENV_DIR" ]; then
   $PYTHON -m venv "$VENV_DIR"
 fi
 
+# Ensure pip is available inside the venv (Debian/Ubuntu venvs may lack it)
+if [ ! -x "$VENV_DIR/bin/pip" ]; then
+  info "Bootstrapping pip in virtual environment..."
+  if ! "$VENV_DIR/bin/python" -m ensurepip --upgrade 2>/dev/null; then
+    warn "ensurepip not available — downloading get-pip.py..."
+    curl -fsSL https://bootstrap.pypa.io/get-pip.py -o /tmp/get-pip.py \
+      || error "Failed to download get-pip.py. Check your internet connection."
+    "$VENV_DIR/bin/python" /tmp/get-pip.py --quiet \
+      || error "Failed to install pip. Try: sudo apt install python3-venv"
+    rm -f /tmp/get-pip.py
+  fi
+fi
+
 info "Installing dependencies..."
 "$VENV_DIR/bin/pip" install --quiet --upgrade pip
 "$VENV_DIR/bin/pip" install --quiet -r "$INSTALL_DIR/requirements.txt"
